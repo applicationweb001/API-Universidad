@@ -65,6 +65,30 @@ namespace Sistema.Web.Controllers
 
             };
 
+            try
+            {
+                _context.Cursos.Add(curso);
+                await _context.SaveChangesAsync(); //guardamos el curso que hemos creado para que genere el ID la base de datos
+
+                var id = curso.idcurso;
+
+                foreach(var obj in model.cursoCarreras) //se esta recorriendo el arreglo que le hemos enviado en CrearViewModel
+                {
+                    CursoCarrera cursoCarrera = new CursoCarrera
+                    {
+                        idcarrera = obj.idcarrera,
+                        idcurso = obj.idcurso
+                    };
+
+                    _context.CursoCarreras.Add(cursoCarrera); //Guardamos en la tabla intermedia
+                }
+                await _context.SaveChangesAsync(); //Recuerden poner siempre en ASYNC
+
+            }
+            catch(Exception ex)
+            {
+                return BadRequest();
+            }
 
             return Ok();
         }

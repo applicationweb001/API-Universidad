@@ -64,7 +64,7 @@ namespace Sistema.Web.Controllers
                 condicion = true
 
             };
-
+            //Prueba para commit
             try
             {
                 _context.Cursos.Add(curso);

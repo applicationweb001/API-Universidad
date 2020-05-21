@@ -21,9 +21,9 @@ namespace Sistema.Web.Controllers
         {
             _context = context;
         }
-        //Get Put Post
-        // GET: api/Carreras/Listar
-        [HttpGet("[action]")]
+    
+        // GET: api/Carreras
+        [HttpGet]
         public async Task<IEnumerable<CarreraViewModel>> Listar()
         {
             var carreras = await _context.Carreras.ToListAsync();
@@ -37,7 +37,7 @@ namespace Sistema.Web.Controllers
         }
 
         // GET: api/Carreras/Select
-        [HttpGet("[action]")]
+        [HttpGet("select")]
         public async Task<IEnumerable<SelectViewModel>> Select()
         {
             var carreras = await _context.Carreras
@@ -52,8 +52,8 @@ namespace Sistema.Web.Controllers
 
         }
 
-        // GET: api/Carreras/Mostrar/1
-        [HttpGet("[action]/{id}")]
+        // GET: api/Carreras/1
+        [HttpGet("{id}")]
         public async Task<ActionResult<Carrera>> Mostrar([FromRoute]int id)
         {
             var carrera = await _context.Carreras.FindAsync(id);
@@ -71,10 +71,10 @@ namespace Sistema.Web.Controllers
             });
         }
 
-        // PUT: api/Carreras/Actualizar
+        // PUT: api/Carreras
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("[action]")]
+        [HttpPut]
         public async Task<IActionResult> Actualizar([FromBody] ActualizarViewModel model)
         {
             //from body nos permite igualar el objeto JSON al objeto que se esta instanciando
@@ -112,20 +112,19 @@ namespace Sistema.Web.Controllers
                 return BadRequest();
             }
 
-            return Ok();
+            return Ok(); //200
         }
 
-        // POST: api/Carreras/Crear
+        // POST: api/Carreras
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost("[action]")]
+        [HttpPost]
         public async Task<ActionResult<Carrera>> Crear([FromBody] CrearViewModel model)
         {
             if (!ModelState.IsValid) // si los data anotation no se cumplen esto valida que se cumplan sino el request sera detenido
             {
                 return BadRequest(ModelState);
             }
-
 
             Carrera carrera = new Carrera
             {
@@ -202,7 +201,6 @@ namespace Sistema.Web.Controllers
             {
                 await _context.SaveChangesAsync();
             }
-
             catch (DbUpdateConcurrencyException)
             {
                 return BadRequest();
@@ -219,18 +217,20 @@ namespace Sistema.Web.Controllers
 
     // DELETE: api/Carreras/5
     [HttpDelete("{id}")]
-        public async Task<ActionResult<Carrera>> DeleteCarrera(int id)
+        public async Task<IActionResult> Borrar(int id)
         {
             var carrera = await _context.Carreras.FindAsync(id);
+           
             if (carrera == null)
             {
                 return NotFound();
             }
 
             _context.Carreras.Remove(carrera);
+
             await _context.SaveChangesAsync();
 
-            return carrera;
+            return Ok();
         }
 
         

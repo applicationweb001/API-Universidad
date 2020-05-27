@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Sistema.Web.Models.RegistrosAc.Carrera
+namespace Sistema.Web.Models.ProgramacionAcademica.Carrera
 {
     public class SelectViewModel
     {

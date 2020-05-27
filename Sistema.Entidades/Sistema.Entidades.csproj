@@ -4,4 +4,11 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="AdministracionAcademica\" />
+    <Folder Include="Matricula\" />
+    <Folder Include="Seguridad\" />
+    <Folder Include="ProgramacionAcademica\" />
+  </ItemGroup>
+
 </Project>

@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sistema.Datos;
-using Sistema.Entidades.RegistrosAc;
-using Sistema.Web.Models.RegistrosAc;
-using Sistema.Web.Models.RegistrosAc.Carrera;
+using Sistema.Entidades.ProgramacionAcademica;
+using Sistema.Web.Models.ProgramacionAcademica.Carrera;
 
 namespace Sistema.Web.Controllers
 {
@@ -37,11 +35,10 @@ namespace Sistema.Web.Controllers
         }
 
         // GET: api/Carreras/Select
-        [HttpGet("select")]
+        [HttpGet("[action]")]
         public async Task<IEnumerable<SelectViewModel>> Select()
         {
             var carreras = await _context.Carreras
-                .Where(c => c.condicion == true)
                 .ToListAsync();
 
             return carreras.Select(c => new SelectViewModel
@@ -63,6 +60,8 @@ namespace Sistema.Web.Controllers
                 return NotFound();
             }
 
+            //Izquierda referencia a los datos del view Model
+            //derecha es la clase con todos los atributos
             return Ok(new CarreraViewModel
             {
                 idcarrera = carrera.idcarrera,
@@ -72,9 +71,7 @@ namespace Sistema.Web.Controllers
         }
 
         // PUT: api/Carreras
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut]
+         [HttpPut]
         public async Task<IActionResult> Actualizar([FromBody] ActualizarViewModel model)
         {
             //from body nos permite igualar el objeto JSON al objeto que se esta instanciando
@@ -103,9 +100,7 @@ namespace Sistema.Web.Controllers
 
             try
             {
-
                 await _context.SaveChangesAsync();
-
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -141,7 +136,7 @@ namespace Sistema.Web.Controllers
 
             catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex);
             }
             return Ok();
         }
@@ -217,7 +212,7 @@ namespace Sistema.Web.Controllers
 
     // DELETE: api/Carreras/5
     [HttpDelete("{id}")]
-        public async Task<IActionResult> Borrar(int id)
+        public async Task<IActionResult> Borrar([FromRoute] int id)
         {
             var carrera = await _context.Carreras.FindAsync(id);
            

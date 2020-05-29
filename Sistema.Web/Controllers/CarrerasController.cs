@@ -223,7 +223,14 @@ namespace Sistema.Web.Controllers
 
             _context.Carreras.Remove(carrera);
 
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
 
             return Ok();
         }

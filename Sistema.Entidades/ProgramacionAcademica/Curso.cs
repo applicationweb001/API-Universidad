@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace Sistema.Web.Models.RegistrosAc.Carrera
+namespace Sistema.Entidades.ProgramacionAcademica
 {
-    public class ActualizarViewModel
+    public class Curso
     {
-        [Required]
-        public int idcarrera { get; set; }
+        public int idcurso { get; set; }
         [Required]
         [StringLength(100, MinimumLength = 10, ErrorMessage = "El nombre debe ser mayor a 10 caracteres y menor a 100")]
         public string nombre { get; set; }
         public bool condicion { get; set; }
+        public ICollection<CursoCarrera> CursoCarreras { get; set; }
     }
 }

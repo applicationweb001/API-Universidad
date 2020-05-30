@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Sistema.Datos.Mapping.RegistrosAc;
-using Sistema.Entidades.RegistrosAc;
+using Sistema.Datos.Mapping.ProgramacionAcademica;
+using Sistema.Entidades.ProgramacionAcademica;
 using System;
 using System.Collections.Generic;
 using System.Text;

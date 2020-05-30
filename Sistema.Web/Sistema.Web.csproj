@@ -19,7 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\RegistrosAc\Carrera\" />
+    <Folder Include="Models\AdministracionAcademica\" />
+    <Folder Include="Models\Matricula\" />
+    <Folder Include="Models\Seguridad\" />
   </ItemGroup>
 
 

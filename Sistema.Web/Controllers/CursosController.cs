@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sistema.Datos;
-using Sistema.Entidades.RegistrosAc;
-using Sistema.Web.Models.RegistrosAc.Curso;
+using Sistema.Entidades.ProgramacionAcademica;
+using Sistema.Web.Models.ProgramacionAcademica.Curso;
 
 namespace Sistema.Web.Controllers
 {
@@ -21,35 +20,51 @@ namespace Sistema.Web.Controllers
         {
             _context = context;
         }
-        // GET: api/Cursos/Listar
-        [HttpGet("[action]")]
+        // GET: api/Cursos
+        [HttpGet]
         public async Task<IEnumerable<CursoViewModel>> Listar()
         {
             var cursos = await _context.CursoCarreras
                 .Include(c => c.Curso)
-                .GroupBy(c => new { c.Curso.idcurso, c.Curso.nombre, c.Curso.descripcion, c.Curso.condicion, })
+                .GroupBy(c => new { c.Curso.idcurso, c.Curso.nombre, c.Curso.condicion, })
                 .Select(x => new {
-                    idcurso = x.Key.idcurso,
-                    nombre = x.Key.nombre,
-                    descripcion = x.Key.descripcion,
-                    condicion = x.Key.condicion,
+                    x.Key.idcurso,
+                    x.Key.nombre,
+                    x.Key.condicion,
                     contador = x.Count()
                 })
                 .ToListAsync();
 
+       
             return cursos.Select(c => new CursoViewModel
             {
                 idcurso = c.idcurso,
                 nombre = c.nombre,
-                descripcion = c.descripcion,
                 condicion = c.condicion,
                 carreras = c.contador
 
             });
         }
 
-        // POST: api/Cursos/Crear
-        [HttpPost("[action]")]
+        //Get: api/Cursos/Carreras/3
+        [HttpGet("carreras/{id}")]
+        public async Task<IEnumerable<DCarreraViewModel>> ListarCarreras([FromRoute] int id)
+        {
+            var detalleCarreras = await _context.CursoCarreras
+                .Include(c=>c.Carrera)
+                .Where(cu=>cu.idcurso == id)
+                .ToListAsync();
+
+            return detalleCarreras.Select(c => new DCarreraViewModel
+            {
+                idcarrera = c.idcarrera,
+                carrera = c.Carrera.nombre 
+                
+            });
+        }
+
+        // POST: api/Cursos
+        [HttpPost]
         public async Task<ActionResult<Curso>> Crear([FromBody] CrearViewModel model)
         {
             if (!ModelState.IsValid) // si los data anotation no se cumplen esto valida que se cumplan sino el request sera detenido
@@ -60,11 +75,9 @@ namespace Sistema.Web.Controllers
             Curso curso = new Curso
             {
                 nombre = model.nombre,
-                descripcion = model.descripcion,
                 condicion = true
 
             };
-            //Prueba para commit
             try
             {
                 _context.Cursos.Add(curso);
@@ -72,14 +85,14 @@ namespace Sistema.Web.Controllers
 
                 var id = curso.idcurso;
 
-                foreach(var obj in model.cursoCarreras) //se esta recorriendo el arreglo que le hemos enviado en CrearViewModel
+                foreach(var obj in model.Carreras) //se esta recorriendo el arreglo que le hemos enviado en CrearViewModel
                 {
                     CursoCarrera cursoCarrera = new CursoCarrera
                     {
-                        idcarrera = obj.idcarrera,
-                        idcurso = obj.idcurso
+                        idcarrera = obj,
+                        idcurso = id
                     };
-
+ 
                     _context.CursoCarreras.Add(cursoCarrera); //Guardamos en la tabla intermedia
                 }
                 await _context.SaveChangesAsync(); //Recuerden poner siempre en ASYNC
@@ -87,28 +100,99 @@ namespace Sistema.Web.Controllers
             }
             catch(Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex);
             }
 
             return Ok();
+        }
+
+        // PUT: api/Cursos
+        [HttpPut]
+        public async Task<IActionResult> Actualizar([FromBody] ActualizarViewModel model)
+        {
+            //from body nos permite igualar el objeto JSON al objeto que se esta instanciando
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (model.idcurso<= 0)
+            {
+                return BadRequest();
+            }
+
+            var curso = await _context.Cursos
+                .FirstOrDefaultAsync(c => c.idcurso == model.idcurso);
+
+            if (curso == null)
+            {
+                return NotFound();
+            }
+
+            //
+            curso.nombre = model.nombre;
+            ///
+
+            var DCarreras = await _context.CursoCarreras
+              .Where(dc => dc.idcurso == model.idcurso)
+              .ToListAsync();
+            
+            try
+            {
+                foreach (var obj in DCarreras)
+                {
+                    _context.CursoCarreras.Remove(obj);
+
+                }
+                
+                foreach (var obj in model.carreras) //se esta recorriendo el arreglo que le hemos enviado en CrearViewModel
+                {
+                    CursoCarrera cursoCarrera = new CursoCarrera
+                    {
+                        idcarrera = obj,
+                        idcurso = curso.idcurso
+                    };
+
+                    _context.CursoCarreras.Add(cursoCarrera); //Guardamos en la tabla intermedia
+                }
+
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return BadRequest();
+            }
+
+            return Ok(); //200
         }
 
 
 
         // DELETE: api/Cursos/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Curso>> DeleteCurso(int id)
+        public async Task<ActionResult<Curso>> Delete([FromRoute]int id)
         {
             var curso = await _context.Cursos.FindAsync(id);
+            var DCarreras = await _context.CursoCarreras.Where(dc=>dc.idcurso == id).ToListAsync();
+
+
             if (curso == null)
             {
                 return NotFound();
             }
 
+            foreach (var obj in DCarreras)
+            {
+                _context.CursoCarreras.Remove(obj);
+
+            }
+            await _context.SaveChangesAsync();
+            
             _context.Cursos.Remove(curso);
+           
             await _context.SaveChangesAsync();
 
-            return curso;
+            return Ok();
         }
 
         private bool CursoExists(int id)

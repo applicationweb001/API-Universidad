@@ -12,8 +12,6 @@ namespace Sistema.Datos
         public DbSet<Carrera> Carreras { get; set; }
         public DbSet<Curso> Cursos { get; set; }
         public DbSet<CursoCarrera> CursoCarreras { get; set; }
-        public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<Rol> Roles { get; set; }
 
 
         public DBContextSistema(DbContextOptions<DBContextSistema> options) : base(options) { }
@@ -24,9 +22,6 @@ namespace Sistema.Datos
             modelBuilder.ApplyConfiguration(new CarreraMap());
             modelBuilder.ApplyConfiguration(new CursoMap());
             modelBuilder.ApplyConfiguration(new CursoCarreraMap());
-            modelBuilder.ApplyConfiguration(new UsuarioMap());
-            modelBuilder.ApplyConfiguration(new RolMap());
-
 
         }
 

@@ -25,8 +25,8 @@ namespace Sistema.Datos
             modelBuilder.ApplyConfiguration(new CarreraMap());
             modelBuilder.ApplyConfiguration(new CursoMap());
             modelBuilder.ApplyConfiguration(new CursoCarreraMap());
-            modelBuilder.ApplyConfiguration(new UsuarioMap());
             modelBuilder.ApplyConfiguration(new RolMap());
+            modelBuilder.ApplyConfiguration(new UsuarioMap());
         }
 
     }

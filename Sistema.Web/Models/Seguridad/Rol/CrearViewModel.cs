@@ -11,6 +11,10 @@ namespace Sistema.Web.Models.Seguridad.Rol
         [Required]
         [StringLength(100, MinimumLength = 10, ErrorMessage = "El nombre debe ser mayor a 10 caracteres y menor a 100")]
         public string nombre { get; set; }
-        
+        [Required]
+        [StringLength(100, MinimumLength = 10, ErrorMessage = "La descripción debe ser mayor a 10 caracteres y menor a 100")]
+        public string descripcion { get; set; }
+
+
     }
 }

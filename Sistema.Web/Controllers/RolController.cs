@@ -29,26 +29,28 @@ namespace Sistema.Web.Controllers
             return roles.Select(c => new RolViewModel
             {
                 idrol = c.idrol,
-                nombre = c.nombre
+                nombre = c.nombre,
+                descripcion = c.descripcion
+            
             });
         }
 
         // GET: api/Carreras/Select
-        /*   [HttpGet("select")]
-           public async Task<IEnumerable<SelectViewModel>> Select()
-           {
-               var carreras = await _context.Carreras
-                   .Where(c => c.condicion == true)
-                   .ToListAsync();
-               return carreras.Select(c => new SelectViewModel
-               {
-                   idcarrera = c.idcarrera,
-                   nombre = c.nombre,
-               });
-           }
-        */
+        [HttpGet("select")]
+        public async Task<IEnumerable<SelectViewModel>> Select()
+        {
+            var carreras = await _context.Roles
+                .ToListAsync();
+            
+            return carreras.Select(c => new SelectViewModel
+            {
+                idrol = c.idrol,    
+                nombre = c.nombre,
+            });
+        }
+        
 
-        // GET: api/Carreras/1
+        // GET: api/Roles/1
         [HttpGet("{id}")]
         public async Task<ActionResult<Rol>> Mostrar([FromRoute] int id)
         {
@@ -65,168 +67,73 @@ namespace Sistema.Web.Controllers
                 nombre = rol.nombre
             });
         }
+       
+        //// PUT: api/Carreras/Desactivar/1
+        //[HttpPut("[action]/{id}")]
+        //public async Task<IActionResult> Desactivar([FromRoute] int id)
+        //{
+        //    if (id <= 0)
+        //    {
+        //        return BadRequest();
+        //    }
 
-        // PUT: api/Carreras
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut]
-        public async Task<IActionResult> Actualizar([FromBody] ActualizarViewModel model)
-        {
-            //from body nos permite igualar el objeto JSON al objeto que se esta instanciando
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //    var rol = await _context.Roles
+        //        .FirstOrDefaultAsync(c => c.idrol == id); // expresion lambda para validar con lo que esta en la web vs la base de datos
 
-            if (model.idrol <= 0)
-            {
-                return BadRequest();
-            }
+        //    if (rol == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var rol = await _context.Roles
-                .FirstOrDefaultAsync(c => c.idrol == model.idrol);
+        //    //  carrera.condicion = false;
 
-            if (rol == null)
-            {
-                return NotFound();
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            //
-            rol.nombre = model.nombre;
+        //    return Ok();
+        //}
 
-            ///
+        //// PUT: api/Carreras/Activar/1
+        //[HttpPut("[action]/{id}")]
+        //public async Task<IActionResult> Activar([FromRoute] int id)
+        //{
+        //    if (id <= 0)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            try
-            {
+        //    var categoria = await _context
+        //                        .Roles
+        //                        .FirstOrDefaultAsync(c => c.idrol == id); // expresion lambda para validar con lo que esta en la web vs la base de datos
 
-                await _context.SaveChangesAsync();
+        //    if (categoria == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return BadRequest();
-            }
+        //    //  categoria.condicion = true;
 
-            return Ok(); //200
-        }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        return BadRequest();
+        //    }
 
-        // POST: api/Carreras
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
-        public async Task<ActionResult<Rol>> Crear([FromBody] CrearViewModel model)
-        {
-            if (!ModelState.IsValid) // si los data anotation no se cumplen esto valida que se cumplan sino el request sera detenido
-            {
-                return BadRequest(ModelState);
-            }
-
-            Rol rol = new Rol
-            {
-                nombre = model.nombre
-            };
-
-            _context.Roles.Add(rol);
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-
-            catch (Exception ex)
-            {
-                return BadRequest();
-            }
-            return Ok();
-        }
-
-        // PUT: api/Carreras/Desactivar/1
-        [HttpPut("[action]/{id}")]
-        public async Task<IActionResult> Desactivar([FromRoute] int id)
-        {
-            if (id <= 0)
-            {
-                return BadRequest();
-            }
-
-            var rol = await _context.Roles
-                .FirstOrDefaultAsync(c => c.idrol == id); // expresion lambda para validar con lo que esta en la web vs la base de datos
-
-            if (rol == null)
-            {
-                return NotFound();
-            }
-
-            //  carrera.condicion = false;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return BadRequest();
-            }
-
-            return Ok();
-        }
-
-        // PUT: api/Carreras/Activar/1
-        [HttpPut("[action]/{id}")]
-        public async Task<IActionResult> Activar([FromRoute] int id)
-        {
-            if (id <= 0)
-            {
-                return BadRequest();
-            }
-
-            var categoria = await _context
-                                .Roles
-                                .FirstOrDefaultAsync(c => c.idrol == id); // expresion lambda para validar con lo que esta en la web vs la base de datos
-
-            if (categoria == null)
-            {
-                return NotFound();
-            }
-
-            //  categoria.condicion = true;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return BadRequest();
-            }
-
-            return Ok();
-        }
+        //    return Ok();
+        //}
 
         private bool RolExists(int id)
         {
             return _context.Roles.Any(e => e.idrol == id);
         }
-
-
-        // DELETE: api/Carreras/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Borrar(int id)
-        {
-            var carrera = await _context.Carreras.FindAsync(id);
-
-            if (carrera == null)
-            {
-                return NotFound();
-            }
-
-            _context.Carreras.Remove(carrera);
-
-            await _context.SaveChangesAsync();
-
-            return Ok();
-        }
-
-
     }
 }

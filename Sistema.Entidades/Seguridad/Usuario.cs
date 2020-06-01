@@ -10,12 +10,12 @@ namespace Sistema.Entidades.Seguridad
     {
         public int idusuario { get; set; }
         [Required]
-        [StringLength(100, MinimumLength = 10, ErrorMessage = "El nombre debe ser mayor a 10 caracteres y menor a 100")]
+        public int idrol { get; set; }
+        [StringLength(100, MinimumLength = 3, ErrorMessage = "El nombre debe ser mayor a 3 caracteres y menor a 100")]
         public string nombre { get; set; }
         [Required]
-        [StringLength(12, MinimumLength = 6, ErrorMessage = "La contraseña debe ser mayor a 6 caracteres y menor a 12")]
-        public string contrasenia { get; set; }
+        public byte[] password { get; set; }
         [ForeignKey("idrol")]
-        public Rol rol { get; set; }
+        public Rol Rol { get; set; }
     }
 }

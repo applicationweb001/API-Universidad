@@ -14,12 +14,9 @@ namespace Sistema.Datos.Mapping.Seguridad
         {
             builder.ToTable("usuario")
                 .HasKey(c => c.idusuario);
-
             builder.Property(c => c.nombre)
                 .HasMaxLength(100);
-            builder.Property(c => c.contrasenia)
-               .HasMaxLength(12);
-
+    
         }
 
     }

@@ -14,7 +14,6 @@ namespace Sistema.Datos.Mapping.Seguridad
         {
             builder.ToTable("rol")
                 .HasKey(c => c.idrol);
-
             builder.Property(c => c.nombre)
                 .HasMaxLength(100);
         }

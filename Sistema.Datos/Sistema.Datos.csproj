@@ -19,7 +19,7 @@
   <ItemGroup>
     <Folder Include="Mapping\AdministracionAcademica\" />
     <Folder Include="Mapping\Matricula\" />
-    <Folder Include="Mapping\Seguridad\" />
+    <Folder Include="Mapping\ProgramacionAcademica\" />
   </ItemGroup>
 
 </Project>

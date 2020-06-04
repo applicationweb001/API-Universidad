@@ -29,7 +29,7 @@ namespace Sistema.Web.Controllers
             _config = config;
         }
         // GET: api/Usuarios/
-        [HttpGet()]
+        [HttpGet]
         public async Task<IEnumerable<UsuarioViewModel>> Listar()
         {
 
@@ -42,14 +42,89 @@ namespace Sistema.Web.Controllers
                 idusuario = u.idusuario,
                 idrol = u.idrol,
                 rol = u.Rol.nombre,
-                nombre = u.nombre
+                email = u.nombre
 
             });
         }
 
-        private bool VerificarPasswordHash(string password, byte[] passwordHashAlmacenado, byte[] passwordSalt)
+        // GET: api/Usuarios
+        [HttpPost]
+        public async Task<IActionResult> Crear([FromBody] CrearViewModel model)
         {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var email = model.email.ToLower();
+
+            if (await _context.Usuarios.AnyAsync(u => u.nombre == email))
+            {
+                return BadRequest("El email ya existe");
+            }
+
+            CrearPasswordHash(model.password, out byte[] passwordHash);
+
+            Usuario usuario = new Usuario
+            {
+                idrol = model.idrol,
+                nombre = model.email.ToLower(),    
+                password = passwordHash,
+            };
+
+            _context.Usuarios.Add(usuario);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+
+            return Ok();
+        }
+
+        // POST: api/Usuarios/Login
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
+        {
+            var nombre = model.email.ToLower();
+
+            var usuario = await _context.Usuarios
+                                        .Include(u => u.Rol)
+                                        .FirstOrDefaultAsync(u => u.nombre == nombre);
+
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            if (!VerificarPasswordHash(model.password, usuario.password))
+            {
+                return NotFound();
+            }
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, usuario.idusuario.ToString()),
+                new Claim(ClaimTypes.Email, nombre),
+                new Claim(ClaimTypes.Role, usuario.Rol.nombre ),
+                new Claim("idusuario", usuario.idusuario.ToString() ),
+                new Claim("rol", usuario.Rol.nombre ),
+                new Claim("nombre", usuario.nombre )
+            };
+
+            return Ok(
+                    new { token = GenerarToken(claims) }
+                );
+
+
+        }
+
+        private bool VerificarPasswordHash(string password, byte[] passwordHashAlmacenado)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(Encoding.UTF8.GetBytes(_config["Seguridad:Secret"])))
             {
                 var passwordHashNuevo = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
                 return new ReadOnlySpan<byte>(passwordHashAlmacenado).SequenceEqual(new ReadOnlySpan<byte>(passwordHashNuevo));
@@ -57,11 +132,10 @@ namespace Sistema.Web.Controllers
         }
 
 
-        private void CrearPasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        private void CrearPasswordHash(string password, out byte[] passwordHash)
         {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(Encoding.UTF8.GetBytes(_config["Seguridad:Secret"])))
             {
-                passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             }
 
@@ -73,9 +147,9 @@ namespace Sistema.Web.Controllers
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-              _config["Jwt:Issuer"],
-              _config["Jwt:Issuer"],
-              expires: DateTime.Now.AddMinutes(30),
+              issuer: _config["Jwt:Issuer"],
+              audience: _config["Jwt:Issuer"],
+              expires: DateTime.Now.AddMinutes(60),
               signingCredentials: creds,
               claims: claims);
 

@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Sistema.Web.Models.Seguridad.Usuario
 {
-    public class UsuarioViewModel
+    public class LoginViewModel
     {
-        public int idusuario { get; set; }
-        public int idrol { get; set; }
-        public string rol { get; set; }
+        [Required]
+        [EmailAddress]
         public string email { get; set; }
-        public byte[] password { get; set; }
-
+        [Required]
+        public string password { get; set; }
     }
 }

@@ -141,73 +141,73 @@ namespace Sistema.Web.Controllers
             return Ok();
         }
 
-        // PUT: api/Carreras/Desactivar/1
-        [HttpPut("[action]/{id}")]
-        public async Task<IActionResult> Desactivar([FromRoute] int id)
-        {
-            if (id <= 0)
-            {
-                return BadRequest();
-            }
+        //// PUT: api/Carreras/Desactivar/1
+        //[HttpPut("[action]/{id}")]
+        //public async Task<IActionResult> Desactivar([FromRoute] int id)
+        //{
+        //    if (id <= 0)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            var carrera = await _context.Carreras
-                .FirstOrDefaultAsync(c => c.idcarrera == id); // expresion lambda para validar con lo que esta en la web vs la base de datos
+        //    var carrera = await _context.Carreras
+        //        .FirstOrDefaultAsync(c => c.idcarrera == id); // expresion lambda para validar con lo que esta en la web vs la base de datos
 
-            if (carrera == null)
-            {
-                return NotFound();
-            }
+        //    if (carrera == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            carrera.condicion = false;
+        //    carrera.condicion = false;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return BadRequest();
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
 
-        // PUT: api/Carreras/Activar/1
-        [HttpPut("[action]/{id}")]
-        public async Task<IActionResult> Activar([FromRoute] int id)
-        {
-            if (id <= 0)
-            {
-                return BadRequest();
-            }
+        //// PUT: api/Carreras/Activar/1
+        //[HttpPut("[action]/{id}")]
+        //public async Task<IActionResult> Activar([FromRoute] int id)
+        //{
+        //    if (id <= 0)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            var categoria = await _context
-                                .Carreras
-                                .FirstOrDefaultAsync(c => c.idcarrera == id); // expresion lambda para validar con lo que esta en la web vs la base de datos
+        //    var categoria = await _context
+        //                        .Carreras
+        //                        .FirstOrDefaultAsync(c => c.idcarrera == id); // expresion lambda para validar con lo que esta en la web vs la base de datos
 
-            if (categoria == null)
-            {
-                return NotFound();
-            }
+        //    if (categoria == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            categoria.condicion = true;
+        //    categoria.condicion = true;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return BadRequest();
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
 
-        private bool CarreraExists(int id)
-        {
-            return _context.Carreras.Any(e => e.idcarrera == id);
-        }
+        //private bool CarreraExists(int id)
+        //{
+        //    return _context.Carreras.Any(e => e.idcarrera == id);
+        //}
     
 
     // DELETE: api/Carreras/5

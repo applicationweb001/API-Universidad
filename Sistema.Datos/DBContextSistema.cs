@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Sistema.Datos.Mapping.AdministracionAcademica;
 using Sistema.Datos.Mapping.ProgramacionAcademica;
 using Sistema.Datos.Mapping.Seguridad;
+using Sistema.Entidades.AdministracionAcademica;
 using Sistema.Entidades.ProgramacionAcademica;
 using Sistema.Entidades.Seguridad;
 using System;
@@ -16,6 +18,7 @@ namespace Sistema.Datos
         public DbSet<CursoCarrera> CursoCarreras { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Rol> Roles { get; set; }
+        public DbSet<Alumno> Alumnos { get; set; }
 
         public DBContextSistema(DbContextOptions<DBContextSistema> options) : base(options) { }
 
@@ -27,6 +30,7 @@ namespace Sistema.Datos
             modelBuilder.ApplyConfiguration(new CursoCarreraMap());
             modelBuilder.ApplyConfiguration(new RolMap());
             modelBuilder.ApplyConfiguration(new UsuarioMap());
+            modelBuilder.ApplyConfiguration(new AlumnoMap());
         }
 
     }

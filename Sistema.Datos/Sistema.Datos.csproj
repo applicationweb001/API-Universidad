@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Mapping\AdministracionAcademica\" />
     <Folder Include="Mapping\Matricula\" />
     <Folder Include="Mapping\Seguridad\" />
   </ItemGroup>

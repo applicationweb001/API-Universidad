@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sistema.Datos", "Sistema.Datos\Sistema.Datos.csproj", "{1A300FCD-1220-4FFA-833C-D8D7CD88353D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sistema.Datos", "Sistema.Datos\Sistema.Datos.csproj", "{1A300FCD-1220-4FFA-833C-D8D7CD88353D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sistema.Entidades", "Sistema.Entidades\Sistema.Entidades.csproj", "{EF2852E5-6ECD-4087-98B1-F85FF6E766F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sistema.Entidades", "Sistema.Entidades\Sistema.Entidades.csproj", "{EF2852E5-6ECD-4087-98B1-F85FF6E766F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sistema.Web", "Sistema.Web\Sistema.Web.csproj", "{775688AE-3F3F-4BB1-B090-39793BBC307B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sistema.Web", "Sistema.Web\Sistema.Web.csproj", "{775688AE-3F3F-4BB1-B090-39793BBC307B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

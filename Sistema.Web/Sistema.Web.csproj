@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Folder Include="Models\Matricula\" />
-    <Folder Include="Models\ProgramacionAcademica\" />
     <Folder Include="Models\Seguridad\" />
   </ItemGroup>
 

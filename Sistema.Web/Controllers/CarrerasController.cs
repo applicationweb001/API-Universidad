@@ -11,7 +11,8 @@ using Sistema.Web.Models.ProgramacionAcademica.Carrera;
 namespace Sistema.Web.Controllers
 {
     [Route("api/[controller]")]
-    public class CarrerasController : Controller
+    [ApiController]
+    public class CarrerasController : ControllerBase
     {
         private readonly DBContextSistema _context;
 
@@ -25,7 +26,7 @@ namespace Sistema.Web.Controllers
         public async Task<IEnumerable<CarreraViewModel>> Listar()
         {
             var carreras = await _context.Carreras.ToListAsync();
-
+            
             return carreras.Select(c => new CarreraViewModel
             {
                 idcarrera = c.idcarrera,

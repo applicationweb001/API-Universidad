@@ -20,6 +20,7 @@ namespace Sistema.Datos
         public DbSet<Rol> Roles { get; set; }
         public DbSet<Alumno> Alumnos { get; set; }
         public DbSet<Seccion> Secciones { get; set; }
+        public DbSet<Docente> Docentes { get; set; }
 
         public DBContextSistema(DbContextOptions<DBContextSistema> options) : base(options) { }
 
@@ -33,6 +34,8 @@ namespace Sistema.Datos
             modelBuilder.ApplyConfiguration(new UsuarioMap());
             modelBuilder.ApplyConfiguration(new AlumnoMap());
             modelBuilder.ApplyConfiguration(new SeccionMap());
+            modelBuilder.ApplyConfiguration(new DocenteMap());
+
         }
 
     }

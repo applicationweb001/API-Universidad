@@ -11,7 +11,8 @@ using Sistema.Web.Models.ProgramacionAcademica.Carrera;
 namespace Sistema.Web.Controllers
 {
     [Route("api/[controller]")]
-    public class CarrerasController : Controller
+    [ApiController]
+    public class CarrerasController : ControllerBase
     {
         private readonly DBContextSistema _context;
 

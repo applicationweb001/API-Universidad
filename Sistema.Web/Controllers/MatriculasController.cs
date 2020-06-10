@@ -40,7 +40,7 @@ namespace Sistema.Web.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Matricula>> GetMatricula(int id)
         {
-            var matricula = await _context.Matricula.FindAsync(id);
+            var matricula = await _context.Matriculas.FindAsync(id);
 
             if (matricula == null)
             {
@@ -67,7 +67,7 @@ namespace Sistema.Web.Controllers
                 return BadRequest();
             }
 
-            var matricula = await _context.Matricula
+            var matricula = await _context.Matriculas
                 .FirstOrDefaultAsync(c => c.idmatricula == model.idmatricula);
 
             if (matricula == null)
@@ -111,7 +111,7 @@ namespace Sistema.Web.Controllers
             };
             try
             {
-                _context.Matricula.Add(matricula);
+                _context.Matriculas.Add(matricula);
 
                 await _context.SaveChangesAsync(); //guardamos el curso que hemos creado para que genere el ID la base de datos
             }
@@ -128,13 +128,13 @@ namespace Sistema.Web.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Matricula>> DeleteMatricula(int id)
         {
-            var matricula = await _context.Matricula.FindAsync(id);
+            var matricula = await _context.Matriculas.FindAsync(id);
             if (matricula == null)
             {
                 return NotFound();
             }
 
-            _context.Matricula.Remove(matricula);
+            _context.Matriculas.Remove(matricula);
             await _context.SaveChangesAsync();
 
             return matricula;
@@ -142,7 +142,7 @@ namespace Sistema.Web.Controllers
 
         private bool MatriculaExists(int id)
         {
-            return _context.Matricula.Any(e => e.idmatricula == id);
+            return _context.Matriculas.Any(e => e.idmatricula == id);
         }
     }
 }

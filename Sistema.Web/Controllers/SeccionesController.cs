@@ -26,13 +26,14 @@ namespace Sistema.Web.Controllers
         public async Task<IEnumerable<SeccionViewModel>> Listar()
         {
             var secciones = await _context.Secciones
-            //.Include (s => s.Docente)
+            .Include (s => s.Curso)
             .ToListAsync();
 
             return secciones.Select(s => new SeccionViewModel
             {
                 idseccion = s.idseccion,
-                idcurso = s.idcurso
+                idcurso = s.idcurso,
+                nombrecurso = s.Curso.nombre
                 //iddocente = s.docente,
                 //docente = s.docente.nombre,
 

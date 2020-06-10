@@ -24,9 +24,10 @@ namespace Sistema.Web.Controllers
 
         // GET: api/Matriculas
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Matricula>>> GetMatricula()
+        public async Task<IEnumerable<MatriculaViewModel>> GetMatricula()
         {
-            var matriculas = await _context.Matriculas.ToListAsync();
+            
+               var matriculas = await _context.Matriculas.ToListAsync();
        
             return matriculas.Select(c => new MatriculaViewModel
             {

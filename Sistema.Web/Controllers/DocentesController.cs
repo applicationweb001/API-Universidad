@@ -13,11 +13,11 @@ namespace Sistema.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DocenteController : ControllerBase
+    public class DocentesController : ControllerBase
     {
         private readonly DBContextSistema _context;
 
-        public DocenteController(DBContextSistema context)
+        public DocentesController(DBContextSistema context)
         {
             _context = context;
         }

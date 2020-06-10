@@ -22,7 +22,7 @@ namespace Sistema.Entidades.AdministracionAcademica
         public string apellido { get; set; }
 
         public string correo { get; set; }
-
+        //odio a kevin caldito seas
         public string dni { get; set; }
        
     }

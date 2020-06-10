@@ -17,6 +17,6 @@ namespace Sistema.Datos.Mapping.AdministracionAcademica
             builder.Property(c => c.nombre)
                 .HasMaxLength(100);
         }
-
+        //odio a kevin caldito seas
     }
 }

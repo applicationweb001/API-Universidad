@@ -17,5 +17,7 @@ namespace Sistema.Web.Models.AdministracionAcademica.Docente
 
         public string dni { get; set; }
 
+        //odio a kevin caldito seas
+
     }
 }

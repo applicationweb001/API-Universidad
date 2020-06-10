@@ -26,7 +26,7 @@ namespace Sistema.Web.Controllers
         public async Task<IEnumerable<CarreraViewModel>> Listar()
         {
             var carreras = await _context.Carreras.ToListAsync();
-
+            
             return carreras.Select(c => new CarreraViewModel
             {
                 idcarrera = c.idcarrera,

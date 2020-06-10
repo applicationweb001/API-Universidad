@@ -16,4 +16,4 @@ namespace Sistema.Datos.Mapping.AdministracionAcademica
         }
 	}
 }
-//WHYYY????? :(
+//WHYYY????? :(, porque se acabo el ciclo

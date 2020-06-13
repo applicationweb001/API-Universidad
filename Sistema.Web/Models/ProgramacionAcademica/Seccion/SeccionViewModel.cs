@@ -9,6 +9,8 @@ namespace Sistema.Web.Models.ProgramacionAcademica.Seccion
     {
         public int idseccion { get; set; }
         public int idcurso { get; set; }
+        public string nombrecurso { get; set; }
+
         //public int iddocente { get; set; }
     }
 }

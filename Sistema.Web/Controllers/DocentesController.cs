@@ -5,56 +5,50 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sistema.Datos;
-using Sistema.Entidades.ProgramacionAcademica;
-using Sistema.Web.Models.ProgramacionAcademica.Seccion;
+using Sistema.Entidades.AdministracionAcademica;
+using Sistema.Web.Models.AdministracionAcademica.Docente;
+
 
 namespace Sistema.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SeccionesController : ControllerBase
+    public class DocentesController : ControllerBase
     {
         private readonly DBContextSistema _context;
 
-        public SeccionesController(DBContextSistema context)
+        public DocentesController(DBContextSistema context)
         {
             _context = context;
         }
 
         // GET: api/Secciones
         [HttpGet]
-        public async Task<IEnumerable<SeccionViewModel>> Listar()
+        public async Task<IEnumerable<DocenteViewModel>> Listar()
         {
-            var secciones = await _context.Secciones
-            .Include (s => s.Curso)
+            var docentes = await _context.Docentes
+            //.Include (s => s.Docente)
             .ToListAsync();
 
-            return secciones.Select(s => new SeccionViewModel
+            return docentes.Select(s => new DocenteViewModel
             {
-                idseccion = s.idseccion,
-                idcurso = s.idcurso,
-                nombrecurso = s.Curso.nombre
-                //iddocente = s.docente,
-                //docente = s.docente.nombre,
-
+                iddocente = s.iddocente,
+            
             }) ;                     
 
         }
 
         // GET: api/Secciones/Select
         [HttpGet("[action]")]
-        public async Task<IEnumerable<SeccionViewModel>> Select()
+        public async Task<IEnumerable<DocenteViewModel>> Select()
         {
-            var secciones = await _context.Secciones
+            var docentes = await _context.Docentes
             //.Include (s => s.Docente)
             .ToListAsync();
 
-            return secciones.Select(s => new SeccionViewModel
+            return docentes.Select(s => new DocenteViewModel
             {
-                idseccion = s.idseccion,
-                idcurso = s.idcurso
-                //iddocente = s.docente,
-                //docente = s.docente.nombre,
+                iddocente = s.iddocente,
 
             });
 
@@ -66,20 +60,18 @@ namespace Sistema.Web.Controllers
 
         // GET: api/Secciones/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Seccion>> Mostrar([FromRoute]int id)
+        public async Task<ActionResult<Docente>> Mostrar([FromRoute]int id)
         {
-            var seccion = await _context.Secciones.FindAsync(id);
+            var docente = await _context.Docentes.FindAsync(id);
 
-            if (seccion == null)
+            if (docente == null)
             {
                 return NotFound();
             }
 
-            return Ok(new SeccionViewModel
+            return Ok(new DocenteViewModel
             {
-                idseccion = seccion.idseccion,
-                idcurso = seccion.idcurso
-                //iddocente = seccion.iddocente,
+                iddocente = docente.iddocente,
             });
         }
 
@@ -94,20 +86,20 @@ namespace Sistema.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (model.idseccion <= 0)
+            if (model.iddocente <= 0)
             {
                 return BadRequest();
             }
 
-            var seccion = await _context.Secciones
-                .FirstOrDefaultAsync(s => s.idseccion == model.idseccion);
+            var docente = await _context.Docentes
+                .FirstOrDefaultAsync(s => s.iddocente == model.iddocente);
 
-            if (seccion == null)
+            if (docente == null)
             {
                 return NotFound();
             }
 
-            seccion.idcurso = model.idseccion;
+            docente.iddocente = model.iddocente;
             //seccion.iddocente = model.iddocente;
 
 
@@ -129,20 +121,20 @@ namespace Sistema.Web.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Seccion>> Crear([FromBody] CrearViewModel model)
+        public async Task<ActionResult<Docente>> Crear([FromBody] CrearViewModel model)
         {
             if (!ModelState.IsValid) // si los data anotation no se cumplen esto valida que se cumplan sino el request sera detenido
             {
                 return BadRequest(ModelState);
             }
 
-            Seccion seccion = new Seccion
+            Docente docente = new Docente
             {
-                idcurso = model.idcurso
+                dni = model.dni
                 //iddocente = model.iddocente
             };
 
-            _context.Secciones.Add(seccion);
+            _context.Docentes.Add(docente);
 
             try
             {
@@ -159,16 +151,16 @@ namespace Sistema.Web.Controllers
 
         // DELETE: api/Secciones/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Seccion>> Borrar([FromRoute] int id)
+        public async Task<ActionResult<Docente>> Borrar([FromRoute] int id)
         {
-            var seccion = await _context.Secciones.FindAsync(id);
+            var docente = await _context.Docentes.FindAsync(id);
 
-            if (seccion == null)
+            if (docente == null)
             {
                 return NotFound();
             }
 
-            _context.Secciones.Remove(seccion);
+            _context.Docentes.Remove(docente);
 
             try
             {
@@ -182,9 +174,9 @@ namespace Sistema.Web.Controllers
             return Ok();
         }
 
-        private bool SeccionExists(int id)
+        private bool DocenteExists(int id)
         {
-            return _context.Secciones.Any(e => e.idseccion == id);
+            return _context.Docentes.Any(e => e.iddocente == id);
         }
     }
 }

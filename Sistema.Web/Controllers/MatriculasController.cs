@@ -162,15 +162,27 @@ namespace Sistema.Web.Controllers
         public async Task<ActionResult<Matricula>> DeleteMatricula(int id)
         {
             var matricula = await _context.Matriculas.FindAsync(id);
+            var DSecciones = await _context.MatriculaSecciones
+                .Where(dc => dc.idmatricula == id)
+                .ToListAsync();
+
+
             if (matricula == null)
             {
                 return NotFound();
             }
 
-            _context.Matriculas.Remove(matricula);
+            foreach(var obj in DSecciones)
+            {
+                _context.MatriculaSecciones.Remove(obj);
+            }
             await _context.SaveChangesAsync();
 
-            return matricula;
+            _context.Matriculas.Remove(matricula);
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
         private bool MatriculaExists(int id)

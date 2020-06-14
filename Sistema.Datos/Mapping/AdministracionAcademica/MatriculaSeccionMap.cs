@@ -7,15 +7,12 @@ using System.Text;
 
 namespace Sistema.Datos.Mapping.AdministracionAcademica
 {
-    public class DocenteMap : IEntityTypeConfiguration<Docente>
+    public class MatriculaSeccionMap : IEntityTypeConfiguration<MatriculaSeccion>
     {
-        public void Configure(EntityTypeBuilder<Docente> builder)
+        public void Configure(EntityTypeBuilder<MatriculaSeccion> builder)
         {
-            builder.ToTable("docente")
-                .HasKey(c => c.iddocente);
-
-            builder.Property(c => c.nombre)
-                .HasMaxLength(100);
+            builder.ToTable("matriculaSeccion").
+                HasKey(cc => cc.idmatriculaSeccion);
         }
     }
 }

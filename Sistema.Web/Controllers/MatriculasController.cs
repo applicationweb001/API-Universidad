@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Sistema.Datos;
 using Sistema.Entidades.AdministracionAcademica;
 using Sistema.Web.Models.AdministracionAcademica.Matricula;
@@ -71,18 +72,37 @@ namespace Sistema.Web.Controllers
             var matricula = await _context.Matriculas
                 .FirstOrDefaultAsync(c => c.idmatricula == model.idmatricula);
 
-            if (matricula == null)
-            {
-                return NotFound();
-            }
-
             //
             matricula.anioacademico = model.anioacademico;
             matricula.idalumno = model.idalumno;
             ///
 
+            if (matricula == null)
+            {
+                return NotFound();
+            }
+
+            var DSecciones = await _context.MatriculaSecciones
+                .Where(dc => dc.idmatricula == model.idmatricula)
+                .ToListAsync();
+           
+
             try
-            {                              
+            {    
+                foreach(var obj in DSecciones)
+                {
+                    _context.MatriculaSecciones.Remove(obj);
+                }
+                foreach(var obj in model.Secciones)
+                {
+                    MatriculaSeccion matriculaSeccion = new MatriculaSeccion
+                    {
+                        idseccion = obj,
+                        idmatricula = matricula.idmatricula
+                    };
+                    _context.MatriculaSecciones.Add(matriculaSeccion);
+                }
+
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -113,8 +133,20 @@ namespace Sistema.Web.Controllers
             try
             {
                 _context.Matriculas.Add(matricula);
-
                 await _context.SaveChangesAsync(); //guardamos el curso que hemos creado para que genere el ID la base de datos
+                
+                var id = matricula.idmatricula;
+
+                foreach(var obj in model.Secciones)
+                {
+                    MatriculaSeccion matriculaSeccion = new MatriculaSeccion
+                    {
+                        idseccion=obj,
+                        idmatricula=id
+                    };
+                    _context.MatriculaSecciones.Add(matriculaSeccion);
+                }
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {

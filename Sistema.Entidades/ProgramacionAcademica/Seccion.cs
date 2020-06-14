@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sistema.Entidades.AdministracionAcademica;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
@@ -15,7 +16,7 @@ namespace Sistema.Entidades.ProgramacionAcademica
         public Curso Curso { get; set; }
         //[ForeignKey("iddocente")]
         //public Docente Docente{ get; set; }
-
+        public ICollection<MatriculaSeccion> MatriculaSecciones { get; set; }
 
     }
 }

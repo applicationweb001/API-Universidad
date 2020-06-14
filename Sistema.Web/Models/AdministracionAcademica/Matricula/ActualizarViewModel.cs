@@ -14,5 +14,7 @@ namespace Sistema.Web.Models.AdministracionAcademica.Matricula
         public int idalumno { get; set; }
         [Required]
         public int anioacademico { get; set; }
+        [Required]
+        public List<int> Secciones { get; set; }
     }
 }

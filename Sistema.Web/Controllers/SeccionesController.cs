@@ -44,6 +44,27 @@ namespace Sistema.Web.Controllers
 
         }
 
+        // GET: api/Secciones/curso/id
+        [HttpGet("cursos/{id}")]
+        public async Task<IEnumerable<SeccionViewModel>> SeccionesCurso([FromRoute]int id)
+        {
+            var secciones = await _context.Secciones
+            .Include (s => s.Curso)
+            .Where(s=>s.idcurso == id )
+            .ToListAsync();
+
+            return secciones.Select(s => new SeccionViewModel
+            {
+                idseccion = s.idseccion,
+                idcurso = s.idcurso,
+                nombrecurso = s.Curso.nombre
+                //iddocente = s.docente,
+                //docente = s.docente.nombre,
+
+            }) ;                     
+
+        }
+
         // GET: api/Secciones/Select
         [HttpGet("[action]")]
         public async Task<IEnumerable<SeccionViewModel>> Select()
@@ -63,10 +84,6 @@ namespace Sistema.Web.Controllers
             });
 
         }
-
-
-
-
 
         // GET: api/Secciones/5
         [HttpGet("{id}")]

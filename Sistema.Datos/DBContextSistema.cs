@@ -22,6 +22,7 @@ namespace Sistema.Datos
         public DbSet<Matricula> Matriculas { get; set; }
         public DbSet<Seccion> Secciones { get; set; }
         public DbSet<Docente> Docentes { get; set; }
+        public DbSet<MatriculaSeccion> MatriculaSecciones { get; set; } 
 
 
         public DBContextSistema(DbContextOptions<DBContextSistema> options) : base(options) { }
@@ -38,10 +39,10 @@ namespace Sistema.Datos
             modelBuilder.ApplyConfiguration(new MatriculaMap());
             modelBuilder.ApplyConfiguration(new SeccionMap());
             modelBuilder.ApplyConfiguration(new DocenteMap());
-
+            modelBuilder.ApplyConfiguration(new MatriculaSeccionMap());
         }
 
-        //odio a kevin caldito seas
+        
 
     }
 }

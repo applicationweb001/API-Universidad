@@ -9,8 +9,6 @@ namespace Sistema.Entidades.AdministracionAcademica
 {
     public class Docente
     {
-        [ForeignKey("idusuario")]
-        public Usuario usuario { get; set; }
         public int iddocente { get; set; }
        
         [Required]

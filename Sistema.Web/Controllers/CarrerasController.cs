@@ -16,7 +16,7 @@ namespace Sistema.Web.Controllers
     {
         private readonly DBContextSistema _context;
 
-        public CarrerasController(DBContextSistema context)
+        public CarrerasController(DBContextSistema context) 
         {
             _context = context;
         }

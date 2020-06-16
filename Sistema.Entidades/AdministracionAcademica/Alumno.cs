@@ -12,12 +12,14 @@ namespace Sistema.Entidades.AdministracionAcademica
 	public class Alumno
 	{
 		public int idAlumno { set; get; }
-		public int idusuario { set; get; }
+		public  int?  idusuario { set; get; }
 		public int idcarrera { set; get; }
 		public int dni { set; get;}
 		public DateTime fechanacimiento { set; get; }
 		public string nombre { set; get; }
+		public string apellido { set; get; }
 		public string direccion { set; get; }
+	
 
 		[ForeignKey("idusuario")]
 		public Usuario usuario { set; get; }

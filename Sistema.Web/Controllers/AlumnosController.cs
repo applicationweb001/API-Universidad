@@ -32,17 +32,38 @@ namespace Sistema.Web.Controllers
         {
             var alumnos = await _context.Alumnos
                                     .Include(a => a.carrera)
-                                    .Include(a=> a.usuario)
+                                    .Include(a=> a.usuario)                            
                                     .ToListAsync();
             return alumnos.Select(a => new AlumnoViewModel
             {
                 idAlumno = a.idAlumno,
-                nombre=a.nombre
+                nombre = a.nombre,
+                dni = a.dni,
+                fechanacimiento = a.fechanacimiento,
+                apellido = a.apellido,
+                nombreCarrera=a.carrera.nombre
+                
+               
+                
+
             });
+        }
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<SelectViewModel>> Select()
+        {
+            var alumnos = await _context.Alumnos
+                .ToListAsync();
+
+            return alumnos.Select(c => new SelectViewModel
+            {
+                idAlumno= c.idAlumno,
+                nombre=c.nombre
+            });
+
         }
 
         // GET: api/Alumnos/5
-        [HttpGet("{id}")]
+        [HttpPost]
         public async Task<ActionResult<Alumno>> Crear([FromBody] CrearViewModel model) 
         {
           if(!ModelState.IsValid){

@@ -11,8 +11,10 @@ namespace Sistema.Web.Models.AdministracionAcademica.Alumno
         public string nombre { set; get; }
         public int dni {set;get;}
         public DateTime fechanacimiento {set;get;}
-        public int idusuario {set;get;}
+     
         public int idcarrera { set; get; }
+        public string apellido { get; set; }
+        public string nombreCarrera { get; set; }
 
 
 

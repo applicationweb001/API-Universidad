@@ -11,9 +11,9 @@ namespace Sistema.Datos.Mapping.AdministracionAcademica
 	{
 		public void Configure(EntityTypeBuilder<Alumno> builder)
         {
-			builder.ToTable("Alumno")
+			builder.ToTable("alumno")
 				.HasKey(cc => cc.idAlumno);
         }
 	}
 }
-//WHYYY????? :(, porque se acabo el ciclo
+//WHYYY????? :(, porque no se acabo el ciclo

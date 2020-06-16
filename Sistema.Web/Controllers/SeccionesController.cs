@@ -27,6 +27,30 @@ namespace Sistema.Web.Controllers
         {
             var secciones = await _context.Secciones
             .Include (s => s.Curso)
+            .Include(s => s.Docente)
+            .ToListAsync();
+
+            return secciones.Select(s => new SeccionViewModel
+            {
+                idseccion = s.idseccion,
+                //nombreseccion =  s.idseccion + s.Curso.codigo
+                idcurso = s.idcurso,
+                nombrecurso = s.Curso.nombre,
+                cantidad = s.cantidad,
+                iddocente = s.iddocente,
+                nombredocente = s.Docente.nombre
+
+            }) ;                     
+
+        }
+
+        // GET: api/Secciones/curso/id
+        [HttpGet("cursos/{id}")]
+        public async Task<IEnumerable<SeccionViewModel>> SeccionesCurso([FromRoute]int id)
+        {
+            var secciones = await _context.Secciones
+            .Include (s => s.Curso)
+            .Where(s=>s.idcurso == id )
             .ToListAsync();
 
             return secciones.Select(s => new SeccionViewModel
@@ -46,23 +70,20 @@ namespace Sistema.Web.Controllers
         public async Task<IEnumerable<SeccionViewModel>> Select()
         {
             var secciones = await _context.Secciones
-            //.Include (s => s.Docente)
+            .Include (s => s.Docente)
             .ToListAsync();
 
             return secciones.Select(s => new SeccionViewModel
             {
                 idseccion = s.idseccion,
-                idcurso = s.idcurso
-                //iddocente = s.docente,
-                //docente = s.docente.nombre,
+                idcurso = s.idcurso,
+                cantidad = s.cantidad,
+                iddocente = s.iddocente
+               
 
             });
 
         }
-
-
-
-
 
         // GET: api/Secciones/5
         [HttpGet("{id}")]
@@ -78,8 +99,9 @@ namespace Sistema.Web.Controllers
             return Ok(new SeccionViewModel
             {
                 idseccion = seccion.idseccion,
-                idcurso = seccion.idcurso
-                //iddocente = seccion.iddocente,
+                idcurso = seccion.idcurso,
+                cantidad = seccion.cantidad,
+                iddocente = seccion.iddocente,
             });
         }
 
@@ -107,8 +129,8 @@ namespace Sistema.Web.Controllers
                 return NotFound();
             }
 
-            seccion.idcurso = model.idseccion;
-            //seccion.iddocente = model.iddocente;
+            seccion.idcurso = model.idcurso;
+            seccion.iddocente = model.iddocente;
 
 
             try
@@ -138,8 +160,8 @@ namespace Sistema.Web.Controllers
 
             Seccion seccion = new Seccion
             {
-                idcurso = model.idcurso
-                //iddocente = model.iddocente
+                idcurso = model.idcurso,
+                iddocente = model.iddocente
             };
 
             _context.Secciones.Add(seccion);

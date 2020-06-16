@@ -22,7 +22,7 @@ namespace Sistema.Web.Controllers
         }
     
         // GET: api/Carreras
-        [HttpGet]
+        [HttpGet] 
         public async Task<IEnumerable<CarreraViewModel>> Listar()
         {
             var carreras = await _context.Carreras.ToListAsync();

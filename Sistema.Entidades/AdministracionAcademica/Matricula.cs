@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Sistema.Entidades.AdministracionAcademica
@@ -11,6 +12,7 @@ namespace Sistema.Entidades.AdministracionAcademica
         
         [ForeignKey("idalumno")]
         public Alumno Alumno { get; set; }
+        public ICollection<MatriculaSeccion>MatriculaSecciones { get; set; }
        
     }
 }

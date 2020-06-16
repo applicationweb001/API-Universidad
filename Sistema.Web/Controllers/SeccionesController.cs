@@ -42,10 +42,11 @@ namespace Sistema.Web.Controllers
         }
 
         // GET: api/Secciones/curso/id
-        [HttpGet("curso/{id}")]
-        public async Task<IEnumerable<SeccionViewModel>> Listar([FromRoute]int id)
+        [HttpGet("cursos/{id}")]
+        public async Task<IEnumerable<SeccionViewModel>> SeccionesCurso([FromRoute]int id)
         {
             var secciones = await _context.Secciones
+            .Include (s => s.Curso)
             .Where(s=>s.idcurso == id )
             .ToListAsync();
 

@@ -14,6 +14,8 @@ namespace Sistema.Web.Models.ProgramacionAcademica.Curso
         [StringLength(100, MinimumLength = 10, ErrorMessage = "El nombre debe ser mayor a 10 caracteres y menor a 100")]
         public string nombre { get; set; }
         [Required]
+        public string codigo_curso { get; set; }
+        [Required]
         public List<int> carreras { get; set; }
     }
 }

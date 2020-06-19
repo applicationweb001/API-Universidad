@@ -10,6 +10,7 @@ using Sistema.Web.Models.ProgramacionAcademica.Curso;
 
 namespace Sistema.Web.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class CursosController : ControllerBase
@@ -24,25 +25,49 @@ namespace Sistema.Web.Controllers
         [HttpGet]
         public async Task<IEnumerable<CursoViewModel>> Listar()
         {
-            var cursos = await _context.CursoCarreras
-                .Include(c => c.Curso)
-                .GroupBy(c => new { c.Curso.idcurso, c.Curso.nombre, c.Curso.condicion, })
-                .Select(x => new {
-                    x.Key.idcurso,
-                    x.Key.nombre,
-                    x.Key.condicion,
-                    contador = x.Count()
-                })
-                .ToListAsync();
 
-       
+            var cursos = await (from c in _context.Cursos
+                                join cc in _context.CursoCarreras on c.idcurso equals cc.idcurso into cc_join
+                                from cc in cc_join.DefaultIfEmpty()
+                                group new { c, cc } by new
+                                {
+                                    c.idcurso,
+                                    c.nombre,
+                                    c.condicion,
+                                    c.codigo_curso
+                                } into g
+                                select new
+                                {
+                                    idcurso = g.Key.idcurso,
+                                    nombre = g.Key.nombre,
+                                    condicion = g.Key.condicion,
+                                    codigo_curso = g.Key.codigo_curso,
+                                    contador = g.Sum(p => p.cc.idcarrera > 0 ? 1 : 0)
+                                }).OrderByDescending(x => x.contador).ToListAsync();
+            /*             var cursos = await (from c in _context.Cursos join cc in _context.CursoCarreras on c.idcurso 
+                        equals cc.idcurso into contCursos from cursoIfNull in contCursos.DefaultIfEmpty () group cursoIfNull 
+                        by new { c.idcurso, c.nombre, c.condicion } into g
+                            let cursoCount = g.Count (c => c != null)
+                            orderby cursoCount ascending select new { idcurso = g.Key.idcurso, nombre = g.Key.nombre, condicion = g.Key.condicion, contador = cursoCount }).ToListAsync ();
+             */
+            /* CursoCarreras
+                .Include (c => c.Curso)
+                .GroupBy (c => new { c.Curso.idcurso, c.Curso.nombre, c.Curso.condicion, })
+                .Select (x => new {
+                    x.Key.idcurso,
+                        x.Key.nombre,
+                        x.Key.condicion,
+                        contador = x.Count ()
+                })
+                .ToListAsync (); */
+
             return cursos.Select(c => new CursoViewModel
             {
                 idcurso = c.idcurso,
                 nombre = c.nombre,
                 condicion = c.condicion,
+                codigo_curso = c.codigo_curso,
                 carreras = c.contador
-
             });
         }
 
@@ -51,15 +76,15 @@ namespace Sistema.Web.Controllers
         public async Task<IEnumerable<DCarreraViewModel>> ListarCarreras([FromRoute] int id)
         {
             var detalleCarreras = await _context.CursoCarreras
-                .Include(c=>c.Carrera)
-                .Where(cu=>cu.idcurso == id)
+                .Include(c => c.Carrera)
+                .Where(cu => cu.idcurso == id)
                 .ToListAsync();
 
             return detalleCarreras.Select(c => new DCarreraViewModel
             {
                 idcarrera = c.idcarrera,
-                carrera = c.Carrera.nombre 
-                
+                carrera = c.Carrera.nombre
+
             });
         }
 
@@ -75,8 +100,8 @@ namespace Sistema.Web.Controllers
             Curso curso = new Curso
             {
                 nombre = model.nombre,
+                codigo_curso = model.codigo_curso,
                 condicion = true
-
             };
             try
             {
@@ -85,20 +110,20 @@ namespace Sistema.Web.Controllers
 
                 var id = curso.idcurso;
 
-                foreach(var obj in model.Carreras) //se esta recorriendo el arreglo que le hemos enviado en CrearViewModel
+                foreach (var obj in model.Carreras) //se esta recorriendo el arreglo que le hemos enviado en CrearViewModel
                 {
                     CursoCarrera cursoCarrera = new CursoCarrera
                     {
                         idcarrera = obj,
                         idcurso = id
                     };
- 
+
                     _context.CursoCarreras.Add(cursoCarrera); //Guardamos en la tabla intermedia
                 }
                 await _context.SaveChangesAsync(); //Recuerden poner siempre en ASYNC
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex);
             }
@@ -116,7 +141,7 @@ namespace Sistema.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (model.idcurso<= 0)
+            if (model.idcurso <= 0)
             {
                 return BadRequest();
             }
@@ -131,12 +156,13 @@ namespace Sistema.Web.Controllers
 
             //
             curso.nombre = model.nombre;
+            curso.codigo_curso = model.codigo_curso;
             ///
 
             var DCarreras = await _context.CursoCarreras
-              .Where(dc => dc.idcurso == model.idcurso)
-              .ToListAsync();
-            
+                .Where(dc => dc.idcurso == model.idcurso)
+                .ToListAsync();
+
             try
             {
                 foreach (var obj in DCarreras)
@@ -144,7 +170,7 @@ namespace Sistema.Web.Controllers
                     _context.CursoCarreras.Remove(obj);
 
                 }
-                
+
                 foreach (var obj in model.carreras) //se esta recorriendo el arreglo que le hemos enviado en CrearViewModel
                 {
                     CursoCarrera cursoCarrera = new CursoCarrera
@@ -166,15 +192,12 @@ namespace Sistema.Web.Controllers
             return Ok(); //200
         }
 
-
-
         // DELETE: api/Cursos/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Curso>> Delete([FromRoute]int id)
+        public async Task<ActionResult<Curso>> Delete([FromRoute] int id)
         {
             var curso = await _context.Cursos.FindAsync(id);
-            var DCarreras = await _context.CursoCarreras.Where(dc=>dc.idcurso == id).ToListAsync();
-
+            var DCarreras = await _context.CursoCarreras.Where(dc => dc.idcurso == id).ToListAsync();
 
             if (curso == null)
             {
@@ -187,9 +210,9 @@ namespace Sistema.Web.Controllers
 
             }
             await _context.SaveChangesAsync();
-            
+
             _context.Cursos.Remove(curso);
-           
+
             await _context.SaveChangesAsync();
 
             return Ok();

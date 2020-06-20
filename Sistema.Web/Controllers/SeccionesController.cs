@@ -38,7 +38,8 @@ namespace Sistema.Web.Controllers
                 nombrecurso = s.Curso.nombre,
                 cantidad = s.cantidad,
                 iddocente = s.iddocente,
-                nombredocente = s.Docente.nombre
+                nombredocente = s.Docente.nombre,
+                codigo_seccion = s.codigo_seccion
 
             }) ;                     
 
@@ -57,10 +58,10 @@ namespace Sistema.Web.Controllers
             {
                 idseccion = s.idseccion,
                 idcurso = s.idcurso,
-                nombrecurso = s.Curso.nombre
-                //iddocente = s.docente,
-                //docente = s.docente.nombre,
-
+                nombrecurso = s.Curso.nombre,
+                iddocente = s.iddocente,
+                nombredocente = s.Docente.nombre,
+                codigo_seccion = s.codigo_seccion
             }) ;                     
 
         }
@@ -78,7 +79,8 @@ namespace Sistema.Web.Controllers
                 idseccion = s.idseccion,
                 idcurso = s.idcurso,
                 cantidad = s.cantidad,
-                iddocente = s.iddocente
+                iddocente = s.iddocente,
+                
                
 
             });
@@ -102,6 +104,7 @@ namespace Sistema.Web.Controllers
                 idcurso = seccion.idcurso,
                 cantidad = seccion.cantidad,
                 iddocente = seccion.iddocente,
+                codigo_seccion = seccion.codigo_seccion,
             });
         }
 
@@ -132,6 +135,7 @@ namespace Sistema.Web.Controllers
             seccion.idcurso = model.idcurso;
             seccion.iddocente = model.iddocente;
 
+            seccion.codigo_seccion = model.codigo_curso + model.idseccion;
 
             try
             {
@@ -144,7 +148,7 @@ namespace Sistema.Web.Controllers
              
             }
 
-            return Ok();
+            return Ok(seccion.codigo_seccion);
         }
 
         // POST: api/Secciones
@@ -161,21 +165,30 @@ namespace Sistema.Web.Controllers
             Seccion seccion = new Seccion
             {
                 idcurso = model.idcurso,
-                iddocente = model.iddocente
+                iddocente = model.iddocente,
+                
+
             };
 
+
             _context.Secciones.Add(seccion);
+
+;
 
             try
             {
                 await _context.SaveChangesAsync();
+
+                seccion.codigo_seccion = model.codigo_curso + '-' + seccion.idseccion.ToString();
             }
 
             catch (Exception ex)
             {
                 return BadRequest(ex);
             }
-            return Ok();
+            return Ok(seccion.codigo_seccion);
+
+
 
         }
 

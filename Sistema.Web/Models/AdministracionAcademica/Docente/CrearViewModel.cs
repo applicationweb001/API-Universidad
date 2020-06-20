@@ -11,8 +11,7 @@ using System.Threading.Tasks;
 namespace Sistema.Web.Models.AdministracionAcademica.Docente
 {
     public class CrearViewModel
-    {
-       
+    {       
 
         public string dni { get; set; }
 

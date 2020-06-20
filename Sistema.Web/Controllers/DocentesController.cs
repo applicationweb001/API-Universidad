@@ -27,12 +27,16 @@ namespace Sistema.Web.Controllers
         public async Task<IEnumerable<DocenteViewModel>> Listar()
         {
             var docentes = await _context.Docentes
-            //.Include (s => s.Docente)
+            //.Include (d => d.Docente)
             .ToListAsync();
 
-            return docentes.Select(s => new DocenteViewModel
+            return docentes.Select(d => new DocenteViewModel
             {
-                iddocente = s.iddocente,
+                iddocente = d.iddocente,
+                correo = d.correo,
+                apellido = d.apellido,
+                dni = d.dni,
+                nombre = d.nombre,
             
             }) ;                     
 
@@ -43,12 +47,12 @@ namespace Sistema.Web.Controllers
         public async Task<IEnumerable<DocenteViewModel>> Select()
         {
             var docentes = await _context.Docentes
-            //.Include (s => s.Docente)
+            //.Include (d => d.Docente)
             .ToListAsync();
 
-            return docentes.Select(s => new DocenteViewModel
+            return docentes.Select(d => new DocenteViewModel
             {
-                iddocente = s.iddocente,
+                iddocente = d.iddocente,
 
             });
 
@@ -92,7 +96,7 @@ namespace Sistema.Web.Controllers
             }
 
             var docente = await _context.Docentes
-                .FirstOrDefaultAsync(s => s.iddocente == model.iddocente);
+                .FirstOrDefaultAsync(d => d.iddocente == model.iddocente);
 
             if (docente == null)
             {

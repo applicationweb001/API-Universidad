@@ -13,7 +13,6 @@ namespace Sistema.Web.Models.ProgramacionAcademica.Seccion
         public int idcurso { get; set; }
 
         [Required]
-        [StringLength(2, MinimumLength = 1, ErrorMessage = "El nombre debe ser mayor a 1 caracteres y menor a 2")]
         public int cantidad { get; set; }
 
         [Required]

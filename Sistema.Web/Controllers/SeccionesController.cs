@@ -166,7 +166,7 @@ namespace Sistema.Web.Controllers
             {
                 idcurso = model.idcurso,
                 iddocente = model.iddocente,
-                
+                cantidad = model.cantidad,
 
             };
 
@@ -180,14 +180,24 @@ namespace Sistema.Web.Controllers
                 await _context.SaveChangesAsync();
 
                 seccion.codigo_seccion = model.codigo_curso + '-' + seccion.idseccion.ToString();
+
             }
 
             catch (Exception ex)
             {
                 return BadRequest(ex);
             }
-            return Ok(seccion.codigo_seccion);
 
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            return Ok(seccion.codigo_seccion);
 
 
         }

@@ -16,6 +16,10 @@ namespace Sistema.Web.Models.ProgramacionAcademica.Seccion
         public string nombredocente { get; set; }
         public string codigo_seccion { get; set; }
 
+        public string ciclo_academico { get; set;}
+        public DateTime inserted_date { get; set; }
+
+
 
 
     }

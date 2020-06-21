@@ -11,7 +11,7 @@ namespace Sistema.Entidades.ProgramacionAcademica
         public int idseccion { get; set; }
         public int idcurso { get; set; }
         public int iddocente { get; set; }
-        public string codigo_seccion { get; set; }
+        public string? codigo_seccion { get; set; }
 
         [ForeignKey("idcurso")]
         public Curso Curso { get; set; }
@@ -21,6 +21,10 @@ namespace Sistema.Entidades.ProgramacionAcademica
 
         public int cantidad { get; set; }
         public ICollection<MatriculaSeccion> MatriculaSecciones { get; set; }
+
+        public string ciclo_academico { get; set; }
+        public DateTime inserted_date { get; set; }
+
 
     }
 }

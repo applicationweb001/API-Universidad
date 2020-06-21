@@ -39,7 +39,9 @@ namespace Sistema.Web.Controllers
                 cantidad = s.cantidad,
                 iddocente = s.iddocente,
                 nombredocente = s.Docente.nombre,
-                codigo_seccion = s.codigo_seccion
+                codigo_seccion = s.codigo_seccion,
+                ciclo_academico = s.ciclo_academico,
+                inserted_date = s.inserted_date
 
             }) ;                     
 
@@ -61,7 +63,9 @@ namespace Sistema.Web.Controllers
                 nombrecurso = s.Curso.nombre,
                 iddocente = s.iddocente,
                 nombredocente = s.Docente.nombre,
-                codigo_seccion = s.codigo_seccion
+                codigo_seccion = s.codigo_seccion,
+                ciclo_academico = s.ciclo_academico,
+                inserted_date = s.inserted_date
             }) ;                     
 
         }
@@ -79,10 +83,8 @@ namespace Sistema.Web.Controllers
                 idseccion = s.idseccion,
                 idcurso = s.idcurso,
                 cantidad = s.cantidad,
-                iddocente = s.iddocente,
+                iddocente = s.iddocente,         
                 
-               
-
             });
 
         }
@@ -105,6 +107,8 @@ namespace Sistema.Web.Controllers
                 cantidad = seccion.cantidad,
                 iddocente = seccion.iddocente,
                 codigo_seccion = seccion.codigo_seccion,
+                ciclo_academico = seccion.ciclo_academico,
+                inserted_date = seccion.inserted_date,
             });
         }
 
@@ -162,31 +166,20 @@ namespace Sistema.Web.Controllers
                 return BadRequest(ModelState);
             }
 
+            var fecha = DateTime.Now;
             Seccion seccion = new Seccion
             {
                 idcurso = model.idcurso,
                 iddocente = model.iddocente,
                 cantidad = model.cantidad,
-
+                ciclo_academico = "2020-01",
+                inserted_date = fecha,
             };
 
 
             _context.Secciones.Add(seccion);
 
 ;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-
-                seccion.codigo_seccion = model.codigo_curso + '-' + seccion.idseccion.ToString();
-
-            }
-
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
 
 
             try

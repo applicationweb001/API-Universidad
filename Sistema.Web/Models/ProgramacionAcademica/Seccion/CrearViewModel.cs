@@ -18,7 +18,6 @@ namespace Sistema.Web.Models.ProgramacionAcademica.Seccion
         [Required]
         public int iddocente { get; set; }
 
-        public string codigo_curso { get; set; }
 
     }
 }

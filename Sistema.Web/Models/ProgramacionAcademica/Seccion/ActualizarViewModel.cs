@@ -21,7 +21,7 @@ namespace Sistema.Web.Models.ProgramacionAcademica.Seccion
         public int iddocente { get; set; }
 
         public string codigo_seccion { get; set; }
-
+        
         public string codigo_curso { get; set; }
 
 

@@ -32,7 +32,6 @@ namespace Sistema.Web.Controllers
         [HttpGet]
         public async Task<IEnumerable<UsuarioViewModel>> Listar()
         {
-
             var usuarios = await _context.Usuarios
                                 .Include(u => u.Rol)
                                 .ToListAsync();
@@ -43,11 +42,10 @@ namespace Sistema.Web.Controllers
                 idrol = u.idrol,
                 rol = u.Rol.nombre,
                 email = u.nombre
-
             });
         }
 
-        // GET: api/Usuarios
+        // POST: api/Usuarios
         [HttpPost]
         public async Task<IActionResult> Crear([FromBody] CrearViewModel model)
         {
@@ -80,6 +78,50 @@ namespace Sistema.Web.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex);
+            }
+
+            return Ok();
+        }
+
+        //PUT:api/Usuarios
+        [HttpPut]
+        public async Task<IActionResult> Actualizar([FromBody] ActualizarViewModel model)
+        {
+            //from body nos permite igual el objeto JSON al objeto que se esta instanciando
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (model.idusuario <= 0)
+            {
+                return BadRequest();
+            }
+
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.idusuario == model.idusuario);
+
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            usuario.nombre = model.email;
+            usuario.idrol = model.idrol;
+
+            if(model.act_password == true)
+            {
+                CrearPasswordHash(model.password
+                                    , out byte[] passwordHash);
+                usuario.password = passwordHash;
+            }
+            
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return BadRequest();
             }
 
             return Ok();
@@ -118,8 +160,6 @@ namespace Sistema.Web.Controllers
             return Ok(
                     new { token = GenerarToken(claims) }
                 );
-
-
         }
 
         private bool VerificarPasswordHash(string password, byte[] passwordHashAlmacenado)

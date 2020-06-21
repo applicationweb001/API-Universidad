@@ -11,13 +11,12 @@ namespace Sistema.Web.Models.ProgramacionAcademica.Seccion
     {
         [Required]
         public int idcurso { get; set; }
-
-        [Required]
-        public int cantidad { get; set; }
-
+        
         [Required]
         public int iddocente { get; set; }
 
+        [Required]
+        public int cantidad { get; set; }
 
     }
 }

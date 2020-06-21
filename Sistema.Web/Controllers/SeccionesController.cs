@@ -138,9 +138,6 @@ namespace Sistema.Web.Controllers
 
             seccion.idcurso = model.idcurso;
             seccion.iddocente = model.iddocente;
-
-            seccion.codigo_seccion = model.codigo_curso + model.idseccion;
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -148,16 +145,13 @@ namespace Sistema.Web.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 return BadRequest();
-               
-             
+            
             }
 
-            return Ok(seccion.codigo_seccion);
+            return Ok();
         }
 
         // POST: api/Secciones
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         public async Task<ActionResult<Seccion>> Crear([FromBody] CrearViewModel model)
         {
@@ -167,20 +161,17 @@ namespace Sistema.Web.Controllers
             }
 
             var fecha = DateTime.Now;
+
             Seccion seccion = new Seccion
             {
-                idcurso = model.idcurso,
-                iddocente = model.iddocente,
-                cantidad = model.cantidad,
-                ciclo_academico = "2020-01",
-                inserted_date = fecha,
+                idcurso = (int)model.idcurso,
+                iddocente = (int)model.iddocente,
+                cantidad = (int)model.cantidad,
+                ciclo_academico = "2020-02",
+                inserted_date = fecha
             };
-
-
+            
             _context.Secciones.Add(seccion);
-
-;
-
 
             try
             {
@@ -190,9 +181,8 @@ namespace Sistema.Web.Controllers
             {
                 return BadRequest(ex);
             }
-            return Ok(seccion.codigo_seccion);
 
-
+            return Ok();
         }
 
         // DELETE: api/Secciones/5

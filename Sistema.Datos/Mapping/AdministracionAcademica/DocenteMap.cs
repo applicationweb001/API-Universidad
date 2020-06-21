@@ -14,8 +14,8 @@ namespace Sistema.Datos.Mapping.AdministracionAcademica
             builder.ToTable("docente")
                 .HasKey(c => c.iddocente);
 
-            builder.Property(c => c.nombre)
-                .HasMaxLength(100);
+         /*   builder.Property(c => c.nombre)
+                .HasMaxLength(100);*/
         }
     }
 }

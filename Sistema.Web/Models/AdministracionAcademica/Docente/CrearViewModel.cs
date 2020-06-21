@@ -11,10 +11,19 @@ using System.Threading.Tasks;
 namespace Sistema.Web.Models.AdministracionAcademica.Docente
 {
     public class CrearViewModel
-    {       
+    {
+        [Required]
+        public string nombre { get; set; }
+        
+        [Required]
+        public string apellido { get; set; }
+        
+        [Required]
+        public string correo { get; set; }
 
+        [Required]
         public string dni { get; set; }
 
-        //odio a kevin caldito seas
+     
     }
 }

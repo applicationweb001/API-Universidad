@@ -11,13 +11,18 @@ namespace Sistema.Web.Models.AdministracionAcademica.Docente
         [Required]
         public int iddocente { get; set; }
        
-        [StringLength(100, MinimumLength = 3
-            , ErrorMessage = "El nombre debe ser mayor a 3 caracteres y menor a 100")]
-        public string email { get; set; }
+        public string correo { get; set; }
 
         public string dni { get; set; }
 
-        //odio a kevin caldito seas
+        [StringLength(100, MinimumLength = 5
+            , ErrorMessage = "El nombre debe ser mayor a 5 caracteres y menor a 100")]
+        public string nombre { get; set; }
+        [StringLength(100, MinimumLength = 5
+            , ErrorMessage = "El apellido debe ser mayor a 5 caracteres y menor a 100")]
+        public string apellido { get; set; }
+
+
 
     }
 }

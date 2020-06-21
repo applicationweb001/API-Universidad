@@ -25,5 +25,7 @@ namespace Sistema.Entidades.AdministracionAcademica
 		public Usuario usuario { set; get; }
 		[ForeignKey("idcarrera")]
 		public Carrera carrera { set; get; }
+
+		public ICollection<Matricula> Matriculas{ get; set; }
 	}
 }

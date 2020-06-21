@@ -1,4 +1,5 @@
-﻿using Sistema.Entidades.Seguridad;
+﻿using Sistema.Entidades.ProgramacionAcademica;
+using Sistema.Entidades.Seguridad;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -20,8 +21,9 @@ namespace Sistema.Entidades.AdministracionAcademica
         public string apellido { get; set; }
 
         public string correo { get; set; }
-        //odio a kevin caldito seas
         public string dni { get; set; }
-       
+
+        public ICollection<Seccion> Secciones { get; set; }
+
     }
 }

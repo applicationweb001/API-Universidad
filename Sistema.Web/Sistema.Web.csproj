@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1">
       <PrivateAssets>all</PrivateAssets>
@@ -21,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Matricula\" />
     <Folder Include="Models\Seguridad\" />
     <Folder Include="Models\ProgramacionAcademica\" />
 

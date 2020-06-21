@@ -15,5 +15,7 @@ namespace Sistema.Entidades.ProgramacionAcademica
         public string codigo_curso { get; set; }
         public bool condicion { get; set; }
         public ICollection<CursoCarrera> CursoCarreras { get; set; }
+
+        public ICollection<Seccion> Secciones { get; set; }
     }
 }

@@ -160,15 +160,14 @@ namespace Sistema.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            var fecha = DateTime.Now;
-
             Seccion seccion = new Seccion
             {
-                idcurso = (int)model.idcurso,
-                iddocente = (int)model.iddocente,
-                cantidad = (int)model.cantidad,
-                ciclo_academico = "2020-02",
-                inserted_date = fecha
+                idcurso = model.idcurso,
+                iddocente = model.iddocente,
+                cantidad = model.cantidad,
+                codigo_seccion ="1",
+                ciclo_academico = "2020-01",
+                inserted_date = DateTime.Now 
             };
             
             _context.Secciones.Add(seccion);

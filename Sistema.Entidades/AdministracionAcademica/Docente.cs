@@ -19,10 +19,10 @@ namespace Sistema.Entidades.AdministracionAcademica
         [Required]
         [StringLength(100, MinimumLength = 10, ErrorMessage = "El apellido debe ser mayor a 10 caracteres y menor a 100")]
         public string apellido { get; set; }
-
+        [Required]
+        [EmailAddress]
         public string correo { get; set; }
-        public string dni { get; set; }
-
+        public int dni { get; set; }
         public ICollection<Seccion> Secciones { get; set; }
 
     }

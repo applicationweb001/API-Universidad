@@ -22,7 +22,7 @@ namespace Sistema.Web.Controllers
             _context = context;
         }
 
-        // GET: api/Secciones
+        // GET: api/Docentes
         [HttpGet]
         public async Task<IEnumerable<DocenteViewModel>> Listar()
         {
@@ -42,27 +42,7 @@ namespace Sistema.Web.Controllers
 
         }
 
-        // GET: api/Secciones/Select
-        [HttpGet("[action]")]
-        public async Task<IEnumerable<DocenteViewModel>> Select()
-        {
-            var docentes = await _context.Docentes
-            //.Include (d => d.Docente)
-            .ToListAsync();
-
-            return docentes.Select(d => new DocenteViewModel
-            {
-                iddocente = d.iddocente,
-
-            });
-
-        }
-
-
-
-
-
-        // GET: api/Secciones/5
+        // GET: api/Docentes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Docente>> Mostrar([FromRoute]int id)
         {
@@ -79,10 +59,10 @@ namespace Sistema.Web.Controllers
             });
         }
 
-        // PUT: api/Secciones/5
+        // PUT: api/Docentes
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> Actualizar([FromBody] ActualizarViewModel model)
         {
             if (!ModelState.IsValid)
@@ -103,27 +83,25 @@ namespace Sistema.Web.Controllers
                 return NotFound();
             }
 
-            docente.iddocente = model.iddocente;
-            //seccion.iddocente = model.iddocente;
-
+            docente.nombre = model.nombre;
+            docente.apellido = model.apellido;
+            docente.correo = model.correo;
+            docente.dni = model.dni;
 
             try
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                return BadRequest();
-               
-             
+                return BadRequest(ex);
+              
             }
 
             return Ok();
         }
 
-        // POST: api/Secciones
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        // POST: api/Docentes
         [HttpPost]
         public async Task<ActionResult<Docente>> Crear([FromBody] CrearViewModel model)
         {
@@ -134,8 +112,11 @@ namespace Sistema.Web.Controllers
 
             Docente docente = new Docente
             {
+                nombre = model.nombre,
+                apellido = model.apellido,
+                correo = model.correo,
                 dni = model.dni
-                //iddocente = model.iddocente
+                
             };
 
             _context.Docentes.Add(docente);

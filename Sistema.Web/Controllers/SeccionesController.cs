@@ -33,15 +33,13 @@ namespace Sistema.Web.Controllers
             return secciones.Select(s => new SeccionViewModel
             {
                 idseccion = s.idseccion,
-                //nombreseccion =  s.idseccion + s.Curso.codigo
                 idcurso = s.idcurso,
                 nombrecurso = s.Curso.nombre,
                 cantidad = s.cantidad,
                 iddocente = s.iddocente,
                 nombredocente = s.Docente.nombre,
                 codigo_seccion = s.codigo_seccion,
-                ciclo_academico = s.ciclo_academico,
-                inserted_date = s.inserted_date
+                ciclo_academico = s.ciclo_academico
 
             }) ;                     
 
@@ -49,24 +47,21 @@ namespace Sistema.Web.Controllers
 
         // GET: api/Secciones/curso/id
         [HttpGet("cursos/{id}")]
-        public async Task<IEnumerable<SeccionViewModel>> SeccionesCurso([FromRoute]int id)
+        public async Task<IEnumerable<SelectViewModel>> SeccionesCurso([FromRoute]int id)
         {
             var secciones = await _context.Secciones
             .Include (s => s.Curso)
-            .Where(s=>s.idcurso == id )
+            .Where(s=>s.idcurso==id )
             .ToListAsync();
 
-            return secciones.Select(s => new SeccionViewModel
+            return secciones.Select(s => new SelectViewModel
             {
                 idseccion = s.idseccion,
                 idcurso = s.idcurso,
-                nombrecurso = s.Curso.nombre,
-                iddocente = s.iddocente,
-                nombredocente = s.Docente.nombre,
-                codigo_seccion = s.codigo_seccion,
-                ciclo_academico = s.ciclo_academico,
-                inserted_date = s.inserted_date
-            }) ;                     
+                nombreCurso = s.Curso.nombre,
+                nombreDocente = s.Docente.nombre,
+                codigo_seccion = s.codigo_seccion
+            });                     
 
         }
 
@@ -108,7 +103,6 @@ namespace Sistema.Web.Controllers
                 iddocente = seccion.iddocente,
                 codigo_seccion = seccion.codigo_seccion,
                 ciclo_academico = seccion.ciclo_academico,
-                inserted_date = seccion.inserted_date,
             });
         }
 
@@ -138,6 +132,10 @@ namespace Sistema.Web.Controllers
 
             seccion.idcurso = model.idcurso;
             seccion.iddocente = model.iddocente;
+            seccion.cantidad = model.cantidad;
+            seccion.codigo_seccion = "1";
+            seccion.inserted_date = DateTime.Now;
+            
             try
             {
                 await _context.SaveChangesAsync();
@@ -181,7 +179,7 @@ namespace Sistema.Web.Controllers
                 return BadRequest(ex);
             }
 
-            return Ok();
+            return Ok(new { fecha = DateTime.Now });
         }
 
         // DELETE: api/Secciones/5

@@ -10,14 +10,15 @@ namespace Sistema.Web.Models.AdministracionAcademica.Docente
     {
         [Required]
         public int iddocente { get; set; }
-       
-        [StringLength(100, MinimumLength = 3
-            , ErrorMessage = "El nombre debe ser mayor a 3 caracteres y menor a 100")]
-        public string email { get; set; }
-
-        public string dni { get; set; }
-
-        //odio a kevin caldito seas
+        [Required]
+        public string nombre { get; set; }
+        [Required]
+        public string apellido { get; set; }
+        [Required]
+        [EmailAddress]
+        public string correo { get; set; }
+        [RegularExpression(pattern: "[+]?[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]", ErrorMessage = "Debe ingresar un DNI de 8 digitos")]
+        public int dni { get; set; }
 
     }
 }

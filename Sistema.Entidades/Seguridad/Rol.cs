@@ -15,5 +15,7 @@ namespace Sistema.Entidades.Seguridad
         [StringLength(100, MinimumLength = 30, ErrorMessage = "La descricpión debe ser mayor a 20 caracteres y menor a 100")]
         public string descripcion { get; set; }
 
+        public ICollection<Usuario> Usuarios { get; set; }
+
     }
 }

@@ -6,22 +6,22 @@ using System.Threading.Tasks;
 
 namespace Sistema.Web.Models.AdministracionAcademica.Alumno
 {
-    //alumno
     public class CrearViewModel
     {
-       
-        [Required]
-        [StringLength(100, MinimumLength =10,ErrorMessage ="El nombre debe ser mayor a 5 caracteres")]
-        public string nombre { get; set; }
-        [Required]
-        [StringLength(8,MinimumLength =8,ErrorMessage ="Debe ser 8 caracters")]
-        public int dni { set; get; }
-        [Required]
-        public string direccion { set; get; }
         [Required]
         public int idcarrera { set; get; }
         [Required]
-        public int idusuario { set; get; }
-
-    }   
+        [StringLength(100, MinimumLength = 4,ErrorMessage ="El nombre debe ser mayor a 5 caracteres")]
+        public string nombre { get; set; }
+        [Required]
+        [StringLength(100, MinimumLength = 4, ErrorMessage = "El nombre debe ser mayor a 5 caracteres")]
+        public string apellido { get; set; }
+        [Required]
+        [RegularExpression(pattern: "[+]?[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]", ErrorMessage = "Debe ingresar un DNI de 8 digitos")]
+        public int dni { get; set; }
+        [Required]
+        public string direccion { set; get; }
+        [Required]
+        public DateTime fechaNacimiento { set; get; }
+    }
 }

@@ -20,7 +20,7 @@ namespace Sistema.Web.Controllers
         private readonly DBContextSistema _context;
         private readonly IConfiguration _config;
 
-        public AlumnosController(DBContextSistema context,IConfiguration config)
+        public AlumnosController(DBContextSistema context, IConfiguration config)
         {
             _context = context;
             _config = config;
@@ -32,50 +32,47 @@ namespace Sistema.Web.Controllers
         {
             var alumnos = await _context.Alumnos
                                     .Include(a => a.carrera)
-                                    .Include(a=> a.usuario)                            
+                                    .Include(a => a.usuario)
                                     .ToListAsync();
             return alumnos.Select(a => new AlumnoViewModel
             {
                 idAlumno = a.idAlumno,
                 nombre = a.nombre,
+                apellido = a.apellido,
                 dni = a.dni,
                 fechanacimiento = a.fechanacimiento,
-                apellido = a.apellido,
-                nombreCarrera=a.carrera.nombre
-                
-               
-                
-
+                nombreCarrera = a.carrera.nombre
             });
         }
-        [HttpGet("[action]")]
-        public async Task<IEnumerable<SelectViewModel>> Select()
-        {
-            var alumnos = await _context.Alumnos
-                .ToListAsync();
+        //[HttpGet("[action]")]
+        //public async Task<IEnumerable<SelectViewModel>> Select()
+        //{
+        //    var alumnos = await _context.Alumnos
+        //        .ToListAsync();
 
-            return alumnos.Select(c => new SelectViewModel
-            {
-                idAlumno= c.idAlumno,
-                nombre=c.nombre
-            });
+        //    return alumnos.Select(c => new SelectViewModel
+        //    {
+        //        idAlumno = c.idAlumno,
+        //        nombre = c.nombre
+        //    });
 
-        }
+        //}
 
         // GET: api/Alumnos/5
         [HttpPost]
-        public async Task<ActionResult<Alumno>> Crear([FromBody] CrearViewModel model) 
+        public async Task<ActionResult<Alumno>> Crear([FromBody] CrearViewModel model)
         {
-          if(!ModelState.IsValid){
-            return BadRequest(ModelState);}
+            if (!ModelState.IsValid) {
+                return BadRequest(ModelState); }
 
             Alumno alumno = new Alumno
             {
                 nombre = model.nombre,
-                dni=model.dni,
-                direccion=model.direccion,
-                idcarrera=model.idcarrera,
-                idusuario=model.idusuario
+                apellido = model.apellido,
+                dni = model.dni,
+                direccion = model.direccion,
+                idcarrera = model.idcarrera,
+                fechanacimiento = model.fechaNacimiento
             };
             _context.Alumnos.Add(alumno);
 
@@ -123,28 +120,6 @@ namespace Sistema.Web.Controllers
             return Ok();
         }
 
-        // POST: api/Alumnos
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<Alumno>> Delete([FromRoute] int id)
-        {
-            var alumno = await _context.Alumnos.FindAsync(id);
-            var DAlumno = await _context.Carreras.Where(da => da.idcarrera == id).ToListAsync();
-
-            if (alumno == null)
-            {
-                return NotFound();
-            }
-            await _context.SaveChangesAsync();
-
-            _context.Alumnos.Remove(alumno);
-
-            await _context.SaveChangesAsync();
-
-            return Ok();
-        }
-
         // DELETE: api/Alumnos/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Alumno>> DeleteAlumno(int id)
@@ -156,7 +131,15 @@ namespace Sistema.Web.Controllers
             }
 
             _context.Alumnos.Remove(alumno);
-            await _context.SaveChangesAsync();
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
 
             return alumno;
         }

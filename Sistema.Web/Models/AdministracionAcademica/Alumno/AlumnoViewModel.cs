@@ -8,12 +8,12 @@ namespace Sistema.Web.Models.AdministracionAcademica.Alumno
     public class AlumnoViewModel
     {
         public int idAlumno { set; get; }
+
+        public int idcarrera { set; get; }
         public string nombre { set; get; }
+        public string apellido { set; get; }
         public int dni {set;get;}
         public DateTime fechanacimiento {set;get;}
-     
-        public int idcarrera { set; get; }
-        public string apellido { get; set; }
         public string nombreCarrera { get; set; }
 
 

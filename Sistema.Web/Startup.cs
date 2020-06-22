@@ -29,7 +29,7 @@ namespace Sistema.Web
         {
             services.AddControllers();
 
-            //services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Serialize);
+            services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Serialize);
 
             services.AddDbContext<DBContextSistema>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Conexion"))); //servicio de la base de datos

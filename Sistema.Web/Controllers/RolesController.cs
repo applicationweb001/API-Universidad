@@ -20,7 +20,7 @@ namespace Sistema.Web.Controllers
             _context = context;
         }
 
-        // GET: api/Carreras
+        // GET: api/roles
         [HttpGet]
         public async Task<IEnumerable<RolViewModel>> Listar()
         {
@@ -35,7 +35,7 @@ namespace Sistema.Web.Controllers
             });
         }
 
-        // GET: api/Carreras/Select
+        // GET: api/roles/Select
         [HttpGet("select")]
         public async Task<IEnumerable<SelectViewModel>> Select()
         {
@@ -67,70 +67,7 @@ namespace Sistema.Web.Controllers
                 nombre = rol.nombre
             });
         }
-       
-        //// PUT: api/Carreras/Desactivar/1
-        //[HttpPut("[action]/{id}")]
-        //public async Task<IActionResult> Desactivar([FromRoute] int id)
-        //{
-        //    if (id <= 0)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    var rol = await _context.Roles
-        //        .FirstOrDefaultAsync(c => c.idrol == id); // expresion lambda para validar con lo que esta en la web vs la base de datos
-
-        //    if (rol == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    //  carrera.condicion = false;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    return Ok();
-        //}
-
-        //// PUT: api/Carreras/Activar/1
-        //[HttpPut("[action]/{id}")]
-        //public async Task<IActionResult> Activar([FromRoute] int id)
-        //{
-        //    if (id <= 0)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    var categoria = await _context
-        //                        .Roles
-        //                        .FirstOrDefaultAsync(c => c.idrol == id); // expresion lambda para validar con lo que esta en la web vs la base de datos
-
-        //    if (categoria == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    //  categoria.condicion = true;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    return Ok();
-        //}
-
+      
         private bool RolExists(int id)
         {
             return _context.Roles.Any(e => e.idrol == id);

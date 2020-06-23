@@ -13,7 +13,7 @@ namespace Sistema.Web.Models.AdministracionAcademica.Matricula
         [Required]
         public int idalumno { get; set; }
         [Required]
-        public int anioacademico { get; set; }
+        public string anioacademico { get; set; }
         [Required]
         public List<int> Secciones { get; set; }
     }

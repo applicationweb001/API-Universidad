@@ -28,7 +28,7 @@ namespace Sistema.Web.Controllers
         public async Task<IEnumerable<MatriculaViewModel>> GetMatricula()
         {
             
-               var matriculas = await _context.Matriculas.ToListAsync();
+            var matriculas = await _context.Matriculas.ToListAsync();
        
             return matriculas.Select(c => new MatriculaViewModel
             {
@@ -146,6 +146,7 @@ namespace Sistema.Web.Controllers
                     };
                     _context.MatriculaSecciones.Add(matriculaSeccion);
                 }
+
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)

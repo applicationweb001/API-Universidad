@@ -8,7 +8,7 @@ namespace Sistema.Entidades.AdministracionAcademica
     {
         public int idmatricula { get; set; }
         public int idalumno { get; set; }
-        public int anioacademico { get; set; }
+        public string anioacademico { get; set; }
         
         [ForeignKey("idalumno")]
         public Alumno Alumno { get; set; }

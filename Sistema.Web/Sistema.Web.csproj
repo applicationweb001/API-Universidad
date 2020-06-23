@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Models\Seguridad\" />
-    <Folder Include="Models\ProgramacionAcademica\" />
 
   </ItemGroup>
 

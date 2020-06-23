@@ -27,8 +27,7 @@ namespace Sistema.Web.Controllers
         public async Task<IEnumerable<DocenteViewModel>> Listar()
         {
             var docentes = await _context.Docentes
-            //.Include (d => d.Docente)
-            .ToListAsync();
+           .ToListAsync();
 
             return docentes.Select(d => new DocenteViewModel
             {
@@ -36,9 +35,30 @@ namespace Sistema.Web.Controllers
                 correo = d.correo,
                 apellido = d.apellido,
                 dni = d.dni,
-                nombre = d.nombre,
+                nombre = d.nombre
             
             }) ;                     
+
+        }
+
+
+        // GET: api/Docentes/Select
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<DocenteViewModel>> Select()
+        {
+            var docentes = await _context.Docentes
+            //.Include (d => d.Docente)
+            .ToListAsync();
+
+            return docentes.Select(d => new DocenteViewModel
+            {
+                iddocente = d.iddocente,
+                nombre=d.nombre,
+                correo = d.correo,
+                apellido = d.apellido,
+                dni = d.dni
+
+            });
 
         }
 
@@ -56,6 +76,11 @@ namespace Sistema.Web.Controllers
             return Ok(new DocenteViewModel
             {
                 iddocente = docente.iddocente,
+                nombre=docente.nombre,
+                apellido=docente.apellido,
+                correo=docente.correo,
+                dni=docente.dni
+
             });
         }
 
@@ -115,8 +140,8 @@ namespace Sistema.Web.Controllers
                 nombre = model.nombre,
                 apellido = model.apellido,
                 correo = model.correo,
-                dni = model.dni
-                
+                dni = model.dni      
+
             };
 
             _context.Docentes.Add(docente);

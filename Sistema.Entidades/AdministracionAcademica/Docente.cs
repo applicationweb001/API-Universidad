@@ -13,11 +13,11 @@ namespace Sistema.Entidades.AdministracionAcademica
         public int iddocente { get; set; }
        
         [Required]
-        [StringLength(100, MinimumLength = 10, ErrorMessage = "El nombre debe ser mayor a 10 caracteres y menor a 100")]
+        [StringLength(100, MinimumLength = 5, ErrorMessage = "El nombre debe ser mayor a 5 caracteres y menor a 100")]
         public string nombre { get; set; }
 
         [Required]
-        [StringLength(100, MinimumLength = 10, ErrorMessage = "El apellido debe ser mayor a 10 caracteres y menor a 100")]
+        [StringLength(100, MinimumLength = 5, ErrorMessage = "El apellido debe ser mayor a 5 caracteres y menor a 100")]
         public string apellido { get; set; }
         [Required]
         [EmailAddress]

@@ -51,6 +51,7 @@ namespace Sistema.Web.Controllers
         {
             var secciones = await _context.Secciones
             .Include (s => s.Curso)
+            .Include(s=>s.Docente)
             .Where(s=>s.idcurso==id )
             .ToListAsync();
 

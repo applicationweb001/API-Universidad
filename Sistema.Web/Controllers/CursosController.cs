@@ -71,6 +71,26 @@ namespace Sistema.Web.Controllers
             });
         }
 
+        [HttpGet("{id}")]
+        public async Task<IEnumerable<CursoViewModel>> ListarCursosCarrera([FromRoute] int id)
+        {
+
+            var cursos = await _context.CursoCarreras
+                                        .Where(cc => cc.idcarrera == id)
+                                        .Include(cc => cc.Curso)
+                                        .ToListAsync();
+           
+            return cursos.Select(c => new CursoViewModel
+            {
+                idcurso = c.idcurso,
+                nombre = c.Curso.nombre,
+                condicion = c.Curso.condicion,
+                codigo_curso = c.Curso.codigo_curso,
+                carreras = 0+
+            });
+        }
+
+
         //Get: api/Cursos/Carreras/3
         [HttpGet("carreras/{id}")]
         public async Task<IEnumerable<DCarreraViewModel>> ListarCarreras([FromRoute] int id)

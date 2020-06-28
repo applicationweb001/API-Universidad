@@ -17,5 +17,7 @@ namespace Sistema.Entidades.Seguridad
         public byte[] password { get; set; }
         [ForeignKey("idrol")]
         public Rol Rol { get; set; }
+
+
     }
 }

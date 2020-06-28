@@ -137,16 +137,32 @@ namespace Sistema.Web.Controllers
                                         .Include(u => u.Rol)
                                         .FirstOrDefaultAsync(u => u.nombre == nombre);
 
+
             if (usuario == null)
             {
                 return NotFound();
             }
 
+            var alumno = await _context.Alumnos
+                                           .Include(a=>a.carrera)
+                                           .FirstOrDefaultAsync(a => a.idusuario == usuario.idusuario);
+
             if (!VerificarPasswordHash(model.password, usuario.password))
             {
                 return NotFound();
             }
+            
+            if(usuario.Rol.nombre =="Alumno")
+            {
+                if (alumno== null)
+                {
+                    return NotFound();
+                }
+            }
 
+
+
+           
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, usuario.idusuario.ToString()),
@@ -155,7 +171,15 @@ namespace Sistema.Web.Controllers
                 new Claim("idusuario", usuario.idusuario.ToString() ),
                 new Claim("rol", usuario.Rol.nombre ),
                 new Claim("nombre", usuario.nombre )
+
             };
+
+            if(alumno != null)
+            {
+                claims.Add(new Claim("idcarrera", alumno.idcarrera.ToString()));
+                claims.Add(new Claim("nombreCarrera", alumno.carrera.nombre));
+
+            }
 
             return Ok(
                     new { token = GenerarToken(claims) }

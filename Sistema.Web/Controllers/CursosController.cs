@@ -86,7 +86,7 @@ namespace Sistema.Web.Controllers
                 nombre = c.Curso.nombre,
                 condicion = c.Curso.condicion,
                 codigo_curso = c.Curso.codigo_curso,
-                carreras = 0+
+                carreras = 0
             });
         }
 

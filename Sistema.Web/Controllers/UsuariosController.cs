@@ -49,6 +49,8 @@ namespace Sistema.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Crear([FromBody] CrearViewModel model)
         {
+            var msg = "Se ha creado con éxito el usuario";
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -58,7 +60,7 @@ namespace Sistema.Web.Controllers
 
             if (await _context.Usuarios.AnyAsync(u => u.nombre == email))
             {
-                return BadRequest("El email ya existe");
+                return BadRequest("El nombre de usuario ya existe");
             }
 
             CrearPasswordHash(model.password, out byte[] passwordHash);
@@ -71,16 +73,36 @@ namespace Sistema.Web.Controllers
             };
 
             _context.Usuarios.Add(usuario);
+
+           
             try
             {
                 await _context.SaveChangesAsync();
+
+                if (model.idalumno > 0)
+                {
+                    var alumno = await _context.Alumnos
+                         .FirstOrDefaultAsync(a => a.idAlumno == model.idalumno);
+                    if (alumno == null)
+                    {
+                        return NotFound();
+                    }
+
+                    alumno.idusuario = usuario.idusuario;
+
+                    msg = "Se ha asigando el usuario al alumno" + alumno.nombre + alumno.apellido + "satisfactoriamente";
+
+                }
+
+                await _context.SaveChangesAsync();
+
             }
             catch (Exception ex)
             {
                 return BadRequest(ex);
             }
 
-            return Ok();
+            return Ok(msg);
         }
 
         //PUT:api/Usuarios
@@ -104,6 +126,8 @@ namespace Sistema.Web.Controllers
             {
                 return NotFound();
             }
+
+
 
             usuario.nombre = model.email;
             usuario.idrol = model.idrol;
@@ -156,13 +180,10 @@ namespace Sistema.Web.Controllers
             {
                 if (alumno== null)
                 {
-                    return NotFound();
+                    return NotFound("Este usuario no tiene asigando un alumno asi que gg");
                 }
             }
 
-
-
-           
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, usuario.idusuario.ToString()),

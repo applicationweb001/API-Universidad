@@ -8,6 +8,7 @@ namespace Sistema.Web.Models.AdministracionAcademica.Alumno
 {
     public class CrearViewModel
     {
+        public int idalumno { get; set; }
         [Required]
         public int idcarrera { set; get; }
         [Required]

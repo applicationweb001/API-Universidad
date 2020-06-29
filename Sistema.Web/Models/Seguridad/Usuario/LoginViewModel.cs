@@ -9,7 +9,7 @@ namespace Sistema.Web.Models.Seguridad.Usuario
     public class LoginViewModel
     {
         [Required]
-        [EmailAddress]
+  
         public string email { get; set; }
         [Required]
         public string password { get; set; }

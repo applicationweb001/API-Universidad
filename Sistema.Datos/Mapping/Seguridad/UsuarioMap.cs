@@ -16,7 +16,7 @@ namespace Sistema.Datos.Mapping.Seguridad
                 .HasKey(c => c.idusuario);
             builder.Property(c => c.nombre)
                 .HasMaxLength(100);
-    
+
         }
 
     }

@@ -25,7 +25,6 @@ namespace Sistema.Web.Controllers
         [HttpGet]
         public async Task<IEnumerable<CursoViewModel>> Listar()
         {
-
             var cursos = await (from c in _context.Cursos
                                 join cc in _context.CursoCarreras on c.idcurso equals cc.idcurso into cc_join
                                 from cc in cc_join.DefaultIfEmpty()
@@ -44,6 +43,7 @@ namespace Sistema.Web.Controllers
                                     codigo_curso = g.Key.codigo_curso,
                                     contador = g.Sum(p => p.cc.idcarrera > 0 ? 1 : 0)
                                 }).OrderByDescending(x => x.contador).ToListAsync();
+
             /*             var cursos = await (from c in _context.Cursos join cc in _context.CursoCarreras on c.idcurso 
                         equals cc.idcurso into contCursos from cursoIfNull in contCursos.DefaultIfEmpty () group cursoIfNull 
                         by new { c.idcurso, c.nombre, c.condicion } into g

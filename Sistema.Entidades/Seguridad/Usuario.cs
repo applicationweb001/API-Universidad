@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sistema.Entidades.AdministracionAcademica;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,8 +16,12 @@ namespace Sistema.Entidades.Seguridad
         public string nombre{ get; set; }
         [Required]
         public byte[] password { get; set; }
+
+        public Alumno alumno { get; set; }
+
         [ForeignKey("idrol")]
         public Rol Rol { get; set; }
+        
 
 
     }

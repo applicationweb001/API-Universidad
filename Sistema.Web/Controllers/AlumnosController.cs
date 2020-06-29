@@ -25,6 +25,7 @@ namespace Sistema.Web.Controllers
             _context = context;
             _config = config;
         }
+        
         [HttpGet("[action]")]
         public async Task<IEnumerable<AlumnoViewModel>> Select()
         {
@@ -40,8 +41,6 @@ namespace Sistema.Web.Controllers
                 dni=a.dni,
                 fechanacimiento=a.fechanacimiento,
                 direccion=a.direccion
-           
-
             });
 
         }
@@ -70,6 +69,32 @@ namespace Sistema.Web.Controllers
               
             });
         }
+
+        // GET: api/Alumnos/
+        [HttpGet("libres")]
+        public async Task<IEnumerable<AlumnoViewModel>> AlumnosLibres()
+        {
+            var alumnos = await _context.Alumnos
+                                    .Include(a => a.carrera)
+                                    .Where(s=>s.idusuario == null)
+                                    .ToListAsync();
+                
+            return alumnos.Select(a => new AlumnoViewModel
+            {
+
+                idAlumno = a.idAlumno,
+                nombre = a.nombre,
+                apellido = a.apellido,
+                dni = a.dni,
+                fechanacimiento = a.fechanacimiento,
+                nombreCarrera = a.carrera.nombre,
+                idcarrera = a.idcarrera,
+                direccion = a.direccion
+
+            });
+        }
+
+
         //[HttpGet("[action]")]
         //public async Task<IEnumerable<SelectViewModel>> Select()
         //{

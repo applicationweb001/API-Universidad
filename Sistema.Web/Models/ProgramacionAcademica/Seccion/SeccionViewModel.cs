@@ -15,8 +15,9 @@ namespace Sistema.Web.Models.ProgramacionAcademica.Seccion
         public int iddocente { get; set; }
         public string nombredocente { get; set; }
         public string codigo_seccion { get; set; }
-
         public string ciclo_academico { get; set;}
+        public int alumnos_registrados { get; set; }
+
 
     }
 }

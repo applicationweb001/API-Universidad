@@ -25,6 +25,28 @@ namespace Sistema.Web.Controllers
             _context = context;
             _config = config;
         }
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<AlumnoViewModel>> Select()
+        {
+            var alumnos = await _context.Alumnos
+            //.Include (d => d.Docente)
+            .ToListAsync();
+
+            return alumnos.Select(a => new AlumnoViewModel
+            {
+                idAlumno=a.idAlumno,
+                nombre=a.nombre,
+                apellido=a.apellido,
+                dni=a.dni,
+                fechanacimiento=a.fechanacimiento,
+                direccion=a.direccion
+           
+
+            });
+
+        }
+
+
 
         // GET: api/Alumnos
         [HttpGet]
@@ -36,12 +58,16 @@ namespace Sistema.Web.Controllers
                                     .ToListAsync();
             return alumnos.Select(a => new AlumnoViewModel
             {
+
                 idAlumno = a.idAlumno,
                 nombre = a.nombre,
                 apellido = a.apellido,
                 dni = a.dni,
                 fechanacimiento = a.fechanacimiento,
-                nombreCarrera = a.carrera.nombre
+                nombreCarrera = a.carrera.nombre,
+                idcarrera=a.idcarrera,
+                direccion=a.direccion
+              
             });
         }
         //[HttpGet("[action]")]
@@ -94,35 +120,46 @@ namespace Sistema.Web.Controllers
         // PUT: api/Alumnos/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> Actualizar([FromBody] ActualizarViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            if (model.idusuario <= 0)
+            if (model.idAlumno<= 0)
             {
                 return BadRequest(ModelState);
             }
             var alumno = await _context.Alumnos
-                .FirstOrDefaultAsync(a => a.idcarrera == model.idcarrera);
+                .FirstOrDefaultAsync(a => a.idAlumno == model.idAlumno);
             if (alumno == null)
             {
                 return NotFound();
             }
             //
             alumno.nombre = model.nombre;
+            alumno.apellido = model.apellido;
+            alumno.dni = model.dni;
+            alumno.direccion = model.direccion;
+            alumno.fechanacimiento = model.fechanacimiento;
+            alumno.idcarrera = model.idcarrera;
+           
 
-            var DAlumnos = await _context.Carreras
-                .Where(da => da.idcarrera == model.idcarrera)
-                .ToListAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
             return Ok();
         }
 
         // DELETE: api/Alumnos/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Alumno>> DeleteAlumno(int id)
+        public async Task<ActionResult<Alumno>> DeleteAlumno([FromRoute] int id)
         {
             var alumno = await _context.Alumnos.FindAsync(id);
             if (alumno == null)
@@ -141,12 +178,14 @@ namespace Sistema.Web.Controllers
                 return BadRequest(ex);
             }
 
-            return alumno;
+            return Ok();
         }
 
         private bool AlumnoExists(int id)
         {
             return _context.Alumnos.Any(e => e.idAlumno == id);
         }
+
+
     }
 }

@@ -16,6 +16,8 @@ namespace Sistema.Web.Models.AdministracionAcademica.Alumno
         public DateTime fechanacimiento {set;get;}
         public string nombreCarrera { get; set; }
 
+        public string direccion { get; set; }
+
 
 
 

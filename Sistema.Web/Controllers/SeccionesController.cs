@@ -53,7 +53,7 @@ namespace Sistema.Web.Controllers
             var secciones = await _context.Secciones
             .Include (s => s.Curso)
             .Include(s=>s.Docente)
-            .Where(s=>s.idcurso==id )
+            .Where(s=>s.idcurso==id && s.ciclo_academico =="2020-01")
             .ToListAsync();
 
             return secciones.Select(s => new SelectViewModel
@@ -62,7 +62,9 @@ namespace Sistema.Web.Controllers
                 idcurso = s.idcurso,
                 nombreCurso = s.Curso.nombre,
                 nombreDocente = s.Docente.nombre,
-                codigo_seccion = s.codigo_seccion
+                codigo_seccion = s.codigo_seccion,
+                alumnosDisponibles = s.alumnos_registrados,
+                totalCupos = s.cantidad
             });                     
 
         }

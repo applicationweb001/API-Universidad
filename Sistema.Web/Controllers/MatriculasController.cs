@@ -28,13 +28,37 @@ namespace Sistema.Web.Controllers
         public async Task<IEnumerable<MatriculaViewModel>> GetMatricula()
         {
             
-            var matriculas = await _context.Matriculas.ToListAsync();
-       
+            var matriculas = await (from mat in _context.Matriculas
+                                    join ms in _context.MatriculaSecciones on mat.idmatricula equals ms.idmatricula
+                                    group new { mat, mat.Alumno, mat.Alumno.carrera, ms } by new
+                                    {
+                                        mat.idalumno,
+                                        mat.anioacademico,
+                                        mat.Alumno.nombre,
+                                        mat.Alumno.apellido,
+                                        mat.Alumno.dni,
+                                        Column1 = mat.Alumno.carrera.nombre
+                                    } into g
+                                    select new
+                                    {
+                                        g.Key.idalumno,
+                                        g.Key.anioacademico,
+                                        g.Key.nombre,
+                                        carrera = g.Key.Column1,
+                                        g.Key.apellido,
+                                        g.Key.dni,
+                                        cursosalumno = g.Count()
+                                    }).ToListAsync();
+
             return matriculas.Select(c => new MatriculaViewModel
             {
-                idmatricula = c.idmatricula,
                 idalumno = c.idalumno,
-                anioacademico = c.anioacademico
+                anioacademico = c.anioacademico,
+                nombre = c.nombre,
+                apellido = c.apellido,
+                dni = c.dni,
+                cursosalumno = c.cursosalumno,
+                carrera = c.carrera
             });
         }
 
@@ -63,6 +87,8 @@ namespace Sistema.Web.Controllers
                 idseccion = c.idseccion,
                 codigo_seccion = c.Seccion.codigo_seccion,
                 alumnosRegistrados = c.Seccion.alumnos_registrados,
+                idcurso = c.Seccion.Curso.idcurso,
+                idocente = c.Seccion.Docente.iddocente,
                 nombreDocente = c.Seccion.Docente.nombre,
                 nombreCurso = c.Seccion.Curso.nombre
             });

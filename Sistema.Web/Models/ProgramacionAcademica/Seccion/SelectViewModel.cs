@@ -12,6 +12,7 @@ namespace Sistema.Web.Models.ProgramacionAcademica.Seccion
         public string nombreCurso { get; set; }
         public string nombreDocente { get; set; }
         public string codigo_seccion { get; set; }
-
+        public int alumnosDisponibles { get; internal set; }
+        public int totalCupos { get; internal set; }
     }
 }

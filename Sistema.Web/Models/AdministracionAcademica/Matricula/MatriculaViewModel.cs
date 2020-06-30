@@ -8,11 +8,16 @@ namespace Sistema.Web.Models.AdministracionAcademica.Matricula
 {
     public class MatriculaViewModel
     {
-        [Required]
+   
         public int idmatricula { get; set; }
-        [Required]
+     
         public int idalumno { get; set; }
-        [Required]
+ 
         public string anioacademico { get; set; }
+        public int cursosalumno { get; internal set; }
+        public int dni { get; internal set; }
+        public string apellido { get; internal set; }
+        public string nombre { get; internal set; }
+        public string carrera { get; internal set; }
     }
 }

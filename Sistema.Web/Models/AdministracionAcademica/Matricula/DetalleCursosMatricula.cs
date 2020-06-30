@@ -10,7 +10,9 @@ namespace Sistema.Web.Models.AdministracionAcademica.Matricula
         public int idseccion { get; set; }
         public string codigo_seccion { get; set; }
         public int alumnosRegistrados { get; set; }
+        public int idocente { get; set; }
         public string nombreDocente { get;  set; }
         public string nombreCurso { get; set; }
+        public int idcurso { get;  set; }
     }
 }

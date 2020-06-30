@@ -39,7 +39,8 @@ namespace Sistema.Web.Controllers
                 iddocente = s.iddocente,
                 nombredocente = s.Docente.nombre,
                 codigo_seccion = s.codigo_seccion,
-                ciclo_academico = s.ciclo_academico
+                ciclo_academico = s.ciclo_academico,
+                alumnos_registrados = s.alumnos_registrados
 
             }) ;                     
 
@@ -80,7 +81,7 @@ namespace Sistema.Web.Controllers
                 idcurso = s.idcurso,
                 cantidad = s.cantidad,
                 iddocente = s.iddocente,         
-                
+                alumnos_registrados = s.alumnos_registrados,                
             });
 
         }
@@ -104,6 +105,7 @@ namespace Sistema.Web.Controllers
                 iddocente = seccion.iddocente,
                 codigo_seccion = seccion.codigo_seccion,
                 ciclo_academico = seccion.ciclo_academico,
+                alumnos_registrados = seccion.alumnos_registrados,
             });
         }
 
@@ -166,7 +168,9 @@ namespace Sistema.Web.Controllers
                 cantidad = model.cantidad,
                 codigo_seccion ="1",
                 ciclo_academico = "2020-01",
-                inserted_date = DateTime.Now 
+                inserted_date = DateTime.Now ,
+                alumnos_registrados = 0,
+
             };
             
             _context.Secciones.Add(seccion);

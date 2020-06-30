@@ -15,6 +15,7 @@ namespace Sistema.Entidades.ProgramacionAcademica
         public string codigo_seccion { get; set; }
         public string ciclo_academico { get; set; }
         public DateTime inserted_date { get; set; }
+        public int alumnos_registrados { get; set; }
 
         [ForeignKey("idcurso")]
         public Curso Curso { get; set; }

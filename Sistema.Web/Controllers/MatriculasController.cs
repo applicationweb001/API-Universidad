@@ -38,24 +38,38 @@ namespace Sistema.Web.Controllers
             });
         }
 
-        // GET: api/Matriculas/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Matricula>> GetMatricula(int id)
+
+
+        // GET: api/Matriculas/Alumno/id
+        [HttpGet("alumno/{id}")]
+        public async Task<IEnumerable<DetalleCursosMatricula>> GetMatriculaAlumno(int id)
         {
-            var matricula = await _context.Matriculas.FindAsync(id);
+            var matricula = await _context.Matriculas.FirstOrDefaultAsync(i => i.idalumno == id && i.anioacademico =="2020-01");
 
             if (matricula == null)
             {
-                return NotFound();
+                return null;
             }
 
-            return matricula;
+            var matriculasSecciones = await _context.MatriculaSecciones
+                                                        .Where(i => i.idmatricula == matricula.idmatricula)
+                                                        .Include(i=>i.Seccion)
+                                                        .Include(i => i.Seccion.Curso)
+                                                        .Include(i => i.Seccion.Docente)
+                                                        .ToListAsync();
+
+            return matriculasSecciones.Select(c => new DetalleCursosMatricula
+            {
+                idseccion = c.idseccion,
+                codigo_seccion = c.Seccion.codigo_seccion,
+                alumnosRegistrados = c.Seccion.alumnos_registrados,
+                nombreDocente = c.Seccion.Docente.nombre,
+                nombreCurso = c.Seccion.Curso.nombre
+            });
         }
 
         // PUT: api/Matriculas/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> PutMatricula([FromBody] ActualizarViewModel model)
         {
             //from body nos permite igualar el objeto JSON al objeto que se esta instanciando
@@ -72,16 +86,17 @@ namespace Sistema.Web.Controllers
             var matricula = await _context.Matriculas
                 .FirstOrDefaultAsync(c => c.idmatricula == model.idmatricula);
 
-            //
-            matricula.anioacademico = model.anioacademico;
-            matricula.idalumno = model.idalumno;
-            ///
-
             if (matricula == null)
             {
                 return NotFound();
             }
 
+            //
+            matricula.anioacademico = model.anioacademico;
+            matricula.idalumno = model.idalumno;
+            ///
+
+          
             var DSecciones = await _context.MatriculaSecciones
                 .Where(dc => dc.idmatricula == model.idmatricula)
                 .ToListAsync();
@@ -93,7 +108,10 @@ namespace Sistema.Web.Controllers
                 {
                     _context.MatriculaSecciones.Remove(obj);
                 }
-                foreach(var obj in model.Secciones)
+
+                await _context.SaveChangesAsync();
+
+                foreach (var obj in model.Secciones)
                 {
                     MatriculaSeccion matriculaSeccion = new MatriculaSeccion
                     {
@@ -114,8 +132,6 @@ namespace Sistema.Web.Controllers
         }
 
         // POST: api/Matriculas
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         public async Task<ActionResult<Matricula>> PostMatricula([FromBody] CrearViewModel model)
         {
@@ -157,6 +173,11 @@ namespace Sistema.Web.Controllers
             return Ok();
 
         }
+
+
+
+
+
 
         // DELETE: api/Matriculas/5
         [HttpDelete("{id}")]

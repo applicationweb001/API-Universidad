@@ -25,7 +25,7 @@ namespace Sistema.Web.Controllers
             _context = context;
             _config = config;
         }
-        
+
         [HttpGet("[action]")]
         public async Task<IEnumerable<AlumnoViewModel>> Select()
         {
@@ -35,12 +35,12 @@ namespace Sistema.Web.Controllers
 
             return alumnos.Select(a => new AlumnoViewModel
             {
-                idAlumno=a.idAlumno,
-                nombre=a.nombre,
-                apellido=a.apellido,
-                dni=a.dni,
-                fechanacimiento=a.fechanacimiento,
-                direccion=a.direccion
+                idAlumno = a.idAlumno,
+                nombre = a.nombre,
+                apellido = a.apellido,
+                dni = a.dni,
+                fechanacimiento = a.fechanacimiento,
+                direccion = a.direccion
             });
 
         }
@@ -64,9 +64,9 @@ namespace Sistema.Web.Controllers
                 dni = a.dni,
                 fechanacimiento = a.fechanacimiento,
                 nombreCarrera = a.carrera.nombre,
-                idcarrera=a.idcarrera,
-                direccion=a.direccion
-              
+                idcarrera = a.idcarrera,
+                direccion = a.direccion
+
             });
         }
 
@@ -76,9 +76,9 @@ namespace Sistema.Web.Controllers
         {
             var alumnos = await _context.Alumnos
                                     .Include(a => a.carrera)
-                                    .Where(s=>s.idusuario == null)
+                                    .Where(s => s.idusuario == null)
                                     .ToListAsync();
-                
+
             return alumnos.Select(a => new AlumnoViewModel
             {
 
@@ -140,6 +140,22 @@ namespace Sistema.Web.Controllers
 
 
         }
+
+        //Get: api/Alumno/Matricula/
+        [HttpGet("matricula/{id}")]
+        public async Task<IActionResult> MatriculaAlumnoCiclo([FromRoute]int id)
+        {
+            var matricula = await _context.Matriculas.FirstOrDefaultAsync(i => i.idalumno == id && i.anioacademico == "2020-01");
+
+            if(matricula==null)
+            {
+                return Ok(new { estado = "Estado: No matriculado" });
+            }
+
+            return Ok(new { estado = "Estado: Matriculado", idmatricula = matricula.idmatricula });
+
+        }
+
 
 
         // PUT: api/Alumnos/5

@@ -197,9 +197,9 @@ namespace Sistema.Web.Controllers
 
             if(alumno != null)
             {
+                claims.Add(new Claim("idalumno", alumno.idAlumno.ToString()));
                 claims.Add(new Claim("idcarrera", alumno.idcarrera.ToString()));
                 claims.Add(new Claim("nombreCarrera", alumno.carrera.nombre));
-
             }
 
             return Ok(

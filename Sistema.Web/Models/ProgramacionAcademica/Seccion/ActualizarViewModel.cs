@@ -12,17 +12,11 @@ namespace Sistema.Web.Models.ProgramacionAcademica.Seccion
         public int idseccion { get; set; }
         [Required]
         public int idcurso { get; set; }
-
-        [Required]
-        [StringLength(2, MinimumLength = 1, ErrorMessage = "El nombre debe ser mayor a 1 caracteres y menor a 2")]
-        public int cantidad { get; set; }
-
         [Required]
         public int iddocente { get; set; }
 
-        public string codigo_seccion { get; set; }
-        
-        public string codigo_curso { get; set; }
+        [Required]
+        public int cantidad { get; set; }
 
 
     }

@@ -45,8 +45,6 @@ namespace Sistema.Web.Controllers
 
         }
 
-
-
         // GET: api/Alumnos
         [HttpGet]
         public async Task<IEnumerable<AlumnoViewModel>> Listar()
@@ -168,12 +166,13 @@ namespace Sistema.Web.Controllers
             {
                 return BadRequest(ModelState);
             }
-            if (model.idAlumno<= 0)
+            if (model.idAlumno < 0)
             {
                 return BadRequest(ModelState);
             }
             var alumno = await _context.Alumnos
                 .FirstOrDefaultAsync(a => a.idAlumno == model.idAlumno);
+            
             if (alumno == null)
             {
                 return NotFound();
@@ -203,6 +202,7 @@ namespace Sistema.Web.Controllers
         public async Task<ActionResult<Alumno>> DeleteAlumno([FromRoute] int id)
         {
             var alumno = await _context.Alumnos.FindAsync(id);
+            
             if (alumno == null)
             {
                 return NotFound();

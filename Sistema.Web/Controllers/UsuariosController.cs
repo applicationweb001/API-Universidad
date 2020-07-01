@@ -164,7 +164,7 @@ namespace Sistema.Web.Controllers
 
             if (usuario == null)
             {
-                return NotFound();
+                return NotFound("No existe ese usuario");
             }
 
             var alumno = await _context.Alumnos
@@ -173,7 +173,7 @@ namespace Sistema.Web.Controllers
 
             if (!VerificarPasswordHash(model.password, usuario.password))
             {
-                return NotFound();
+                return NotFound("La contraseña no esta funcionando");
             }
             
             if(usuario.Rol.nombre =="Alumno")
@@ -239,6 +239,35 @@ namespace Sistema.Web.Controllers
               claims: claims);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        // DELETE: api/Usuarios/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Usuario>> DeleteUsuarios([FromRoute] int id)
+        {
+            var alumno = await _context.Alumnos
+                                        .Include(i => i.usuario)
+                                        .FirstOrDefaultAsync(i => i.usuario.idusuario == id);
+
+            var usuario = await _context.Usuarios.FindAsync(id);
+
+            if (alumno != null)
+            {
+                alumno.idusuario = null;
+            }
+
+            _context.Usuarios.Remove(usuario);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+
+            return Ok();
         }
 
         private bool UsuarioExists(int id)
